@@ -24,6 +24,20 @@
             <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
+        <!-- Role -->
+        <div>
+            <label for="role" class="block text-[11px] font-semibold text-slate-600 mb-2 uppercase tracking-wider">Vai trò trong trang trại</label>
+            <select id="role" name="role" required 
+                    class="w-full bg-slate-50/50 border border-slate-200 p-3 text-sm focus:outline-none focus:bg-white focus:border-[#16a34a] focus:ring-4 focus:ring-emerald-500/10 rounded-lg transition-all">
+                @foreach(App\Enums\UserRole::cases() as $role)
+                    <option value="{{ $role->value }}" {{ old('role') === $role->value ? 'selected' : '' }}>
+                        {{ $role->label() }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('role')" class="mt-1" />
+        </div>
+
         <!-- Password -->
         <div>
             <label for="password" class="block text-[11px] font-semibold text-slate-600 mb-2 uppercase tracking-wider">Mật khẩu</label>
