@@ -21,37 +21,49 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Chủ Trại Nuôi',
             'email' => 'owner@example.com',
+            'username' => 'owner',
             'role' => UserRole::OWNER,
+            'status' => 'active',
         ]);
 
         User::factory()->create([
             'name' => 'Kỹ Thuật Viên',
             'email' => 'technician@example.com',
+            'username' => 'technician',
             'role' => UserRole::TECHNICIAN,
+            'status' => 'active',
         ]);
 
         User::factory()->create([
             'name' => 'Nhân Viên Kho',
             'email' => 'warehouse@example.com',
+            'username' => 'warehouse',
             'role' => UserRole::WAREHOUSE_STAFF,
+            'status' => 'active',
         ]);
 
         User::factory()->create([
             'name' => 'Kế Toán',
             'email' => 'accountant@example.com',
+            'username' => 'accountant',
             'role' => UserRole::ACCOUNTANT,
+            'status' => 'active',
         ]);
 
         User::factory()->create([
             'name' => 'Người Thu Hoạch',
             'email' => 'harvester@example.com',
+            'username' => 'harvester',
             'role' => UserRole::HARVESTER,
+            'status' => 'active',
         ]);
 
         User::factory()->create([
             'name' => 'Admin Hệ Thống',
             'email' => 'admin@example.com',
+            'username' => 'admin',
             'role' => UserRole::SYSTEM_ADMIN,
+            'status' => 'active',
         ]);
 
         // Seed default Farming Zone

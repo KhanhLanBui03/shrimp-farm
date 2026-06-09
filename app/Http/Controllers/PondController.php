@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pond;
 use App\Models\FarmingZone;
+use App\Models\AuditLog;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PondController extends Controller
@@ -73,7 +75,16 @@ class PondController extends Controller
         $validated['bottom_diameter'] = $bottom;
         $validated['area'] = $area;
 
-        Pond::create($validated);
+        $pond = Pond::create($validated);
+
+        // Ghi log hoạt động
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Thêm ao nuôi',
+            'description' => "Đã tạo ao nuôi mới: {$pond->name} (Mã ao: {$pond->code}, Diện tích đáy: " . number_format($pond->area, 2) . " m²)",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
 
         return redirect()->route('ponds.index')->with('success', 'Thêm ao nuôi thành công!');
     }
@@ -106,16 +117,36 @@ class PondController extends Controller
 
         $pond->update($validated);
 
+        // Ghi log hoạt động
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Cập nhật ao nuôi',
+            'description' => "Đã cập nhật thông tin ao nuôi: {$pond->name} (Mã ao: {$pond->code})",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
         return redirect()->route('ponds.index')->with('success', 'Cập nhật thông tin ao nuôi thành công!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $pond = Pond::findOrFail($id);
+        $name = $pond->name;
+        $code = $pond->code;
         $pond->delete();
+
+        // Ghi log hoạt động
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Xóa ao nuôi',
+            'description' => "Đã xóa ao nuôi: {$name} (Mã ao: {$code})",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
 
         return redirect()->route('ponds.index')->with('success', 'Xóa ao nuôi thành công!');
     }

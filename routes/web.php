@@ -14,6 +14,7 @@ use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\OperatingExpenseController;
 use App\Http\Controllers\HarvestController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -42,12 +43,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('customers', CustomerController::class);
 
     // Systems Management & Audit logs
-    Route::get('/users', function () {
-        return view('users.index');
-    })->name('users.index');
-    Route::get('/audit-logs', function () {
-        return 'Nhật ký hoạt động';
-    })->name('audit-logs.index');
+    Route::post('/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+    Route::post('/users/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+    Route::resource('users', UserController::class);
+
+    Route::get('/audit-logs', [\App\Http\Controllers\AuditLogController::class, 'index'])->name('audit-logs.index');
 });
 
 require __DIR__.'/auth.php';

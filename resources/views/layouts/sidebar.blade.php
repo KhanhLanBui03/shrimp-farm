@@ -15,7 +15,7 @@
     </div>
 
     <!-- Navigation Links -->
-    <div class="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+    <div class="flex-1 overflow-y-auto sidebar-scroll px-4 py-6 space-y-6">
         <!-- HỆ THỐNG -->
         <div>
             <h3 class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Hệ Thống</h3>

@@ -23,8 +23,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'username',
         'password',
         'role',
+        'status',
     ];
 
     /**
@@ -60,5 +62,13 @@ class User extends Authenticatable
             return $this->role === $role;
         }
         return $this->role?->value === $role;
+    }
+
+    /**
+     * Relationship to Audit Logs.
+     */
+    public function auditLogs()
+    {
+        return $this->hasMany(AuditLog::class);
     }
 }

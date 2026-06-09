@@ -50,6 +50,14 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        // Kiểm tra trạng thái hoạt động của tài khoản
+        if (Auth::user()->status === 'inactive') {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
