@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CultivationCycle;
 use Illuminate\Http\Request;
 
 class CultivationCycleController extends Controller
@@ -11,6 +12,8 @@ class CultivationCycleController extends Controller
      */
     public function index()
     {
+        $items = CultivationCycle::with('ponds')->latest()->get();
+
         return view('placeholder', [
             'title' => 'Quản lý vụ nuôi',
             'description' => 'Quản lý thông tin vụ nuôi, gán ao tham gia vụ, theo dõi tiến độ vụ nuôi và tổng hợp lượng thức ăn toàn vụ.',
@@ -20,7 +23,8 @@ class CultivationCycleController extends Controller
                 'Bảng tổng hợp thức ăn toàn vụ theo từng ao',
                 'Quyết toán vụ nuôi: tổng chi phí đối chiếu tổng doanh thu → lợi nhuận vụ'
             ],
-            'icon' => '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 6H16"></path></svg>'
+            'icon' => '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 6H16"></path></svg>',
+            'items' => $items
         ]);
     }
 
