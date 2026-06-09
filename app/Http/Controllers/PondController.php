@@ -11,17 +11,148 @@ class PondController extends Controller
      */
     public function index()
     {
-        return view('placeholder', [
-            'title' => 'Quản lý ao nuôi',
-            'description' => 'Quản lý thông số ao nuôi, loại ao nuôi (thương phẩm/gièo), trạng thái ao nuôi và lịch sử sử dụng ao.',
-            'features' => [
-                'Tạo ao nuôi (tự động tính diện tích đáy từ đường kính miệng và bờ)',
-                'Phân loại ao: Ao nuôi thương phẩm hoặc Ao Gièo (ao ươm)',
-                'Quản lý trạng thái ao: Trống → Cải tạo → Sẵn sàng thả → Đang nuôi → Ngưng sử dụng',
-                'Xem lịch sử sử dụng của từng ao'
+        $farmingZones = [
+            ['id' => 1, 'code' => 'ZONE-A', 'name' => 'Khu Nuôi Cánh Tây'],
+            ['id' => 2, 'code' => 'ZONE-B', 'name' => 'Khu Nuôi Cánh Đông']
+        ];
+
+        $ponds = [
+            [
+                'id' => 101,
+                'code' => 'A-01',
+                'name' => 'Ao Rearing 01',
+                'farming_zone' => 'Khu Nuôi Cánh Tây',
+                'farming_zone_id' => 1,
+                'mouth_diameter' => 30.0,
+                'border_exclusion' => 2.0,
+                'bottom_diameter' => 26.0,
+                'area' => 530.93,
+                'pond_type' => 'rearing',
+                'status' => 'rearing',
+                'history' => [
+                    ['cycle' => 'VỤ NUÔI HÈ THU 2026', 'start_date' => '2026-03-01', 'harvest_date' => '2026-05-28', 'yield' => '4.2 tấn', 'status' => 'Đã thu hoạch'],
+                    ['cycle' => 'VỤ NUÔI THU ĐÔNG 2025', 'start_date' => '2025-09-10', 'harvest_date' => '2025-12-15', 'yield' => '3.8 tấn', 'status' => 'Đã thu hoạch']
+                ]
             ],
-            'icon' => '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>'
-        ]);
+            [
+                'id' => 102,
+                'code' => 'A-02',
+                'name' => 'Ao Rearing 02',
+                'farming_zone' => 'Khu Nuôi Cánh Tây',
+                'farming_zone_id' => 1,
+                'mouth_diameter' => 30.0,
+                'border_exclusion' => 2.0,
+                'bottom_diameter' => 26.0,
+                'area' => 530.93,
+                'pond_type' => 'rearing',
+                'status' => 'rearing',
+                'history' => [
+                    ['cycle' => 'VỤ NUÔI HÈ THU 2026', 'start_date' => '2026-03-01', 'harvest_date' => '2026-05-28', 'yield' => '4.5 tấn', 'status' => 'Đã thu hoạch']
+                ]
+            ],
+            [
+                'id' => 103,
+                'code' => 'A-03',
+                'name' => 'Ao Rearing 03',
+                'farming_zone' => 'Khu Nuôi Cánh Tây',
+                'farming_zone_id' => 1,
+                'mouth_diameter' => 32.0,
+                'border_exclusion' => 2.5,
+                'bottom_diameter' => 27.0,
+                'area' => 572.56,
+                'pond_type' => 'rearing',
+                'status' => 'rearing',
+                'history' => []
+            ],
+            [
+                'id' => 104,
+                'code' => 'A-04',
+                'name' => 'Ao Gièo Ươm A',
+                'farming_zone' => 'Khu Nuôi Cánh Tây',
+                'farming_zone_id' => 1,
+                'mouth_diameter' => 15.0,
+                'border_exclusion' => 1.5,
+                'bottom_diameter' => 12.0,
+                'area' => 113.10,
+                'pond_type' => 'nursery',
+                'status' => 'rehabilitating',
+                'history' => [
+                    ['cycle' => 'ƯƠM GIỐNG KHÓA 1', 'start_date' => '2026-01-10', 'harvest_date' => '2026-02-15', 'yield' => 'Chuyển ao rearing', 'status' => 'Đã chuyển']
+                ]
+            ],
+            [
+                'id' => 105,
+                'code' => 'A-05',
+                'name' => 'Ao Rearing 05',
+                'farming_zone' => 'Khu Nuôi Cánh Tây',
+                'farming_zone_id' => 1,
+                'mouth_diameter' => 30.0,
+                'border_exclusion' => 2.0,
+                'bottom_diameter' => 26.0,
+                'area' => 530.93,
+                'pond_type' => 'rearing',
+                'status' => 'empty',
+                'history' => []
+            ],
+            [
+                'id' => 201,
+                'code' => 'B-01',
+                'name' => 'Ao Rearing B1',
+                'farming_zone' => 'Khu Nuôi Cánh Đông',
+                'farming_zone_id' => 2,
+                'mouth_diameter' => 28.0,
+                'border_exclusion' => 2.0,
+                'bottom_diameter' => 24.0,
+                'area' => 452.39,
+                'pond_type' => 'rearing',
+                'status' => 'rearing',
+                'history' => []
+            ],
+            [
+                'id' => 202,
+                'code' => 'B-02',
+                'name' => 'Ao Rearing B2',
+                'farming_zone' => 'Khu Nuôi Cánh Đông',
+                'farming_zone_id' => 2,
+                'mouth_diameter' => 28.0,
+                'border_exclusion' => 2.0,
+                'bottom_diameter' => 24.0,
+                'area' => 452.39,
+                'pond_type' => 'rearing',
+                'status' => 'rearing',
+                'history' => []
+            ],
+            [
+                'id' => 203,
+                'code' => 'B-03',
+                'name' => 'Ao Gièo B3',
+                'farming_zone' => 'Khu Nuôi Cánh Đông',
+                'farming_zone_id' => 2,
+                'mouth_diameter' => 16.0,
+                'border_exclusion' => 1.5,
+                'bottom_diameter' => 13.0,
+                'area' => 132.73,
+                'pond_type' => 'nursery',
+                'status' => 'rehabilitating',
+                'history' => []
+            ],
+            [
+                'id' => 204,
+                'code' => 'B-04',
+                'name' => 'Ao Gièo B4',
+                'farming_zone' => 'Khu Nuôi Cánh Đông',
+                'farming_zone_id' => 2,
+                'mouth_diameter' => 16.0,
+                'border_exclusion' => 1.5,
+                'bottom_diameter' => 13.0,
+                'area' => 132.73,
+                'pond_type' => 'nursery',
+                'status' => 'rehabilitating',
+                'history' => []
+            ]
+        ];
+
+        return view('ponds.index', compact('ponds', 'farmingZones'));
     }
 
     /**
