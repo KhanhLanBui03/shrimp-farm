@@ -37,11 +37,59 @@
                             </svg>
                             <span>Hồ sơ cá nhân</span>
                         </a>
+                        <!-- Logout Button -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-red-600 hover:text-red-800 bg-red-50 border border-red-100 px-4 py-2 rounded-lg hover:bg-red-100 transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                                <span>Đăng xuất</span>
+                            </button>
+                        </form>
                     </div>
                 </header>
 
-                <!-- Page Content -->
-                <main class="flex-1 overflow-y-auto bg-slate-50/50">
+                <main class="flex-1 overflow-y-auto bg-slate-50/50 p-8">
+                    <!-- Flash Messages & Validation Errors -->
+                    @if (session('success') || session('error') || $errors->any())
+                        <div class="max-w-7xl mx-auto mb-6">
+                            @if (session('success'))
+                                <div class="p-4 mb-4 text-sm text-emerald-800 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center space-x-2">
+                                    <svg class="w-5 h-5 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span class="font-bold">{{ session('success') }}</span>
+                                </div>
+                            @endif
+
+                            @if (session('error'))
+                                <div class="p-4 mb-4 text-sm text-red-800 rounded-2xl bg-red-50 border border-red-100 flex items-center space-x-2">
+                                    <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span class="font-bold">{{ session('error') }}</span>
+                                </div>
+                            @endif
+
+                            @if ($errors->any())
+                                <div class="p-4 mb-4 text-sm text-red-800 rounded-2xl bg-red-50 border border-red-100">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <svg class="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                        </svg>
+                                        <span class="font-bold">Đã xảy ra lỗi nhập liệu:</span>
+                                    </div>
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
                     {{ $slot }}
                 </main>
             </div>

@@ -53,5 +53,68 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
             'role' => UserRole::SYSTEM_ADMIN,
         ]);
+
+        // Seed default Farming Zone
+        $zoneA = \App\Models\FarmingZone::create([
+            'code' => 'ZONE-A',
+            'name' => 'Khu Nuôi Cánh Tây',
+            'total_area' => 50000.00,
+            'location' => 'Phía Tây đê bao sông Hậu',
+            'status' => 'active'
+        ]);
+
+        // Seed Ponds nested under Zone A
+        $zoneA->ponds()->createMany([
+            [
+                'code' => 'A-01',
+                'name' => 'Ao Rearing 01',
+                'mouth_diameter' => 30.0,
+                'border_exclusion' => 2.0,
+                'bottom_diameter' => 26.0,
+                'area' => 530.93,
+                'pond_type' => 'rearing',
+                'status' => 'rearing'
+            ],
+            [
+                'code' => 'A-02',
+                'name' => 'Ao Rearing 02',
+                'mouth_diameter' => 30.0,
+                'border_exclusion' => 2.0,
+                'bottom_diameter' => 26.0,
+                'area' => 530.93,
+                'pond_type' => 'rearing',
+                'status' => 'rearing'
+            ],
+            [
+                'code' => 'A-03',
+                'name' => 'Ao Rearing 03',
+                'mouth_diameter' => 32.0,
+                'border_exclusion' => 2.5,
+                'bottom_diameter' => 27.0,
+                'area' => 572.56,
+                'pond_type' => 'rearing',
+                'status' => 'rearing'
+            ],
+            [
+                'code' => 'A-04',
+                'name' => 'Ao Gièo Ươm A',
+                'mouth_diameter' => 15.0,
+                'border_exclusion' => 1.5,
+                'bottom_diameter' => 12.0,
+                'area' => 113.10,
+                'pond_type' => 'nursery',
+                'status' => 'rehabilitating'
+            ],
+            [
+                'code' => 'A-05',
+                'name' => 'Ao Rearing 05',
+                'mouth_diameter' => 30.0,
+                'border_exclusion' => 2.0,
+                'bottom_diameter' => 26.0,
+                'area' => 530.93,
+                'pond_type' => 'rearing',
+                'status' => 'empty'
+            ]
+        ]);
     }
 }

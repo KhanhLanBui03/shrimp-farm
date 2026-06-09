@@ -28,7 +28,7 @@
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tổng số khu nuôi</span>
-                    <span class="text-3xl font-black text-slate-900 mt-1 block">2</span>
+                    <span class="text-3xl font-black text-slate-900 mt-1 block">{{ count($farmingZones) }}</span>
                 </div>
                 <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ao đang nuôi tôm</span>
-                    <span class="text-3xl font-black text-emerald-600 mt-1 block">5</span>
+                    <span class="text-3xl font-black text-emerald-600 mt-1 block">{{ $farmingZones->sum('rearing_ponds_count') }}</span>
                 </div>
                 <div class="p-3 bg-emerald-50 text-emerald-500 rounded-xl">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ao đang cải tạo</span>
-                    <span class="text-3xl font-black text-amber-500 mt-1 block">3</span>
+                    <span class="text-3xl font-black text-amber-500 mt-1 block">{{ $farmingZones->sum('rehabilitating_ponds_count') }}</span>
                 </div>
                 <div class="p-3 bg-amber-50 text-amber-500 rounded-xl">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,7 +67,7 @@
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ao đang trống</span>
-                    <span class="text-3xl font-black text-slate-500 mt-1 block">1</span>
+                    <span class="text-3xl font-black text-slate-500 mt-1 block">{{ $farmingZones->sum('empty_ponds_count') }}</span>
                 </div>
                 <div class="p-3 bg-slate-50 text-slate-500 rounded-xl">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -255,33 +255,37 @@
                     </button>
                 </div>
 
-                <!-- Simulating post form / Hardcoded fields -->
-                <form @submit.prevent="showModal = false; alert('Giao diện tĩnh đã sẵn sàng. API sẽ được bổ sung sau!')" class="space-y-4">
+                <!-- Dynamic Form Action pointing to store or update API -->
+                <form method="POST" :action="isEdit ? '/farming-zones/' + modalData.id : '{{ route('farming-zones.store') }}'" class="space-y-4">
+                    @csrf
+                    <!-- Spoof PUT method only when editing -->
+                    <input type="hidden" name="_method" value="PUT" x-bind:disabled="!isEdit">
+
                     <!-- Code -->
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-500 mb-2 uppercase tracking-wider">Mã khu nuôi</label>
-                        <input type="text" x-model="modalData.code" placeholder="Ví dụ: ZONE-C" required
+                        <input type="text" name="code" x-model="modalData.code" placeholder="Ví dụ: ZONE-C" required
                                class="w-full bg-slate-50 border border-slate-200 p-3 text-sm focus:outline-none focus:bg-white focus:border-[#16a34a] focus:ring-4 focus:ring-emerald-500/10 rounded-lg transition-all">
                     </div>
 
                     <!-- Name -->
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-500 mb-2 uppercase tracking-wider">Tên khu nuôi</label>
-                        <input type="text" x-model="modalData.name" placeholder="Ví dụ: Khu Nuôi Cánh Bắc" required
+                        <input type="text" name="name" x-model="modalData.name" placeholder="Ví dụ: Khu Nuôi Cánh Bắc" required
                                class="w-full bg-slate-50 border border-slate-200 p-3 text-sm focus:outline-none focus:bg-white focus:border-[#16a34a] focus:ring-4 focus:ring-emerald-500/10 rounded-lg transition-all">
                     </div>
 
                     <!-- Total Area -->
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-500 mb-2 uppercase tracking-wider">Diện tích tổng (m²)</label>
-                        <input type="number" x-model="modalData.total_area" placeholder="Ví dụ: 45000" required
+                        <input type="number" name="total_area" x-model="modalData.total_area" placeholder="Ví dụ: 45000" required
                                class="w-full bg-slate-50 border border-slate-200 p-3 text-sm focus:outline-none focus:bg-white focus:border-[#16a34a] focus:ring-4 focus:ring-emerald-500/10 rounded-lg transition-all">
                     </div>
 
                     <!-- Location -->
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-500 mb-2 uppercase tracking-wider">Vị trí địa lý</label>
-                        <input type="text" x-model="modalData.location" placeholder="Ví dụ: Phía Bắc trạm bơm" 
+                        <input type="text" name="location" x-model="modalData.location" placeholder="Ví dụ: Phía Bắc trạm bơm" 
                                class="w-full bg-slate-50 border border-slate-200 p-3 text-sm focus:outline-none focus:bg-white focus:border-[#16a34a] focus:ring-4 focus:ring-emerald-500/10 rounded-lg transition-all">
                     </div>
 
