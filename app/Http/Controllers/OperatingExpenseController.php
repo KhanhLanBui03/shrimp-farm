@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\OperatingExpense;
+use App\Models\AuditLog;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class OperatingExpenseController extends Controller
@@ -40,7 +42,33 @@ class OperatingExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'expense_type' => 'required|string|in:electricity,feed,salary,fuel,maintenance,chemicals,probiotic,mineral,seed,other',
+            'description' => 'nullable|string|max:500',
+            'amount' => 'required|numeric|min:0',
+            'cost_center_type' => 'required|string|in:zone,pond,App\Models\FarmingZone,App\Models\Pond',
+            'cost_center_id' => 'required|integer',
+            'allocation_method' => 'required|string|in:direct,equal_split',
+        ]);
+
+        if ($validated['cost_center_type'] === 'zone') {
+            $validated['cost_center_type'] = 'App\Models\FarmingZone';
+        } elseif ($validated['cost_center_type'] === 'pond') {
+            $validated['cost_center_type'] = 'App\Models\Pond';
+        }
+
+        $expense = OperatingExpense::create($validated);
+
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Ghi nhận chi phí vận hành',
+            'description' => "Đã ghi nhận chi phí mới: " . number_format($expense->amount) . "đ cho mục {$expense->expense_type}",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
+        return redirect()->back()->with('success', 'Ghi nhận chi phí vận hành thành công!');
     }
 
     /**

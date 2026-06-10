@@ -1,47 +1,43 @@
 @php
+    // Fetch lookup data for select dropdowns in modals
+    $allPonds = \App\Models\Pond::all();
+    $allSuppliers = \App\Models\Supplier::all();
+    $allCycles = \App\Models\CultivationCycle::orderBy('start_date', 'desc')->get();
+    $allCustomers = \App\Models\Customer::all();
+    $allHarvests = \App\Models\Harvest::with('pond')->latest()->get();
+    $allZones = \App\Models\FarmingZone::all();
+
     // Determine configuration based on title
     $config = match($title) {
         'Quản lý vụ nuôi' => [
             'stats' => [
-                ['label' => 'Vụ đang hoạt động', 'value' => '2 Vụ nuôi', 'desc' => 'Tăng trưởng tốt'],
+                ['label' => 'Vụ đang hoạt động', 'value' => $allCycles->where('status', 'active')->count() . ' Vụ nuôi', 'desc' => 'Tăng trưởng tốt'],
                 ['label' => 'Diện tích mặt nước', 'value' => '12.500 m²', 'desc' => 'Tỉ lệ lấp đầy 85%'],
-                ['label' => 'Tổng số ao tham gia', 'value' => '8 Ao nuôi', 'desc' => 'Gồm 2 ao gièo'],
+                ['label' => 'Tổng số ao tham gia', 'value' => $allPonds->count() . ' Ao nuôi', 'desc' => 'Gồm 2 ao gièo'],
                 ['label' => 'Sản lượng dự kiến', 'value' => '35,7 Tấn', 'desc' => 'Dự kiến thu hoạch T8']
             ],
             'columns' => ['Mã Vụ', 'Tên Vụ Nuôi', 'Số Ao Thao Tác', 'Ngày Bắt Đầu', 'Dự Kiến Thu Hoạch', 'Trạng Thái'],
-            'rows' => [
-                ['code' => 'VU-2026-A', 'name' => 'Vụ Nuôi Hè Thu 2026', 'ponds' => '4 Ao nuôi', 'start' => '15/05/2026', 'end' => '15/08/2026', 'status' => 'Đang nuôi', 'status_type' => 'success'],
-                ['code' => 'VU-2026-B', 'name' => 'Vụ Thả Thử Nghiệm CNC', 'ponds' => '2 Ao nuôi', 'start' => '01/06/2026', 'end' => '01/09/2026', 'status' => 'Đang nuôi', 'status_type' => 'success'],
-                ['code' => 'VU-2025-C', 'name' => 'Vụ Đông Xuân 2025', 'ponds' => '6 Ao nuôi', 'start' => '10/11/2025', 'end' => '10/02/2026', 'status' => 'Đã thu hoạch', 'status_type' => 'info']
-            ]
+            'rows' => []
         ],
         'Quản lý thả giống' => [
             'stats' => [
                 ['label' => 'Tổng lượng giống thả', 'value' => '1,2 Triệu con', 'desc' => 'Thả mật độ cao'],
                 ['label' => 'Mật độ trung bình', 'value' => '120 con/m²', 'desc' => 'Đạt chuẩn CNC'],
-                ['label' => 'Nhà cung cấp giống', 'value' => '3 Đối tác', 'desc' => 'Đã qua kiểm dịch'],
+                ['label' => 'Nhà cung cấp giống', 'value' => $allSuppliers->count() . ' Đối tác', 'desc' => 'Đã qua kiểm dịch'],
                 ['label' => 'Tỉ lệ sống ban đầu', 'value' => '98%', 'desc' => 'Đo sau 15 ngày thả']
             ],
             'columns' => ['Mã Lô Giống', 'Nhà Cung Cấp', 'Số Lượng Thả', 'Mật Độ', 'Ao Chỉ Định', 'Ngày Thả', 'Tình Trạng'],
-            'rows' => [
-                ['code' => 'LG-CP-009', 'supplier' => 'C.P Group Việt Nam', 'qty' => '300.000 con', 'density' => '150 con/m²', 'pond' => 'Ao Rearing 01', 'date' => '20/05/2026', 'status' => 'Khỏe mạnh', 'status_type' => 'success'],
-                ['code' => 'LG-VU-012', 'supplier' => 'Thủy sản Việt Úc', 'qty' => '400.000 con', 'density' => '120 con/m²', 'pond' => 'Ao Rearing 03', 'date' => '02/06/2026', 'status' => 'Khỏe mạnh', 'status_type' => 'success'],
-                ['code' => 'LG-CP-008', 'supplier' => 'C.P Group Việt Nam', 'qty' => '250.000 con', 'density' => '130 con/m²', 'pond' => 'Ao Rearing 02', 'date' => '18/04/2026', 'status' => 'Đã thu hoạch', 'status_type' => 'info']
-            ]
+            'rows' => []
         ],
         'Nhật ký kỹ thuật ao' => [
             'stats' => [
-                ['label' => 'Nhật ký hôm nay', 'value' => '8 Ghi nhận', 'desc' => 'Cập nhật bởi KTV'],
+                ['label' => 'Nhật ký kỹ thuật', 'value' => 'Hoạt động tốt', 'desc' => 'Cập nhật bởi KTV'],
                 ['label' => 'Lượng ăn hôm nay', 'value' => '320 kg', 'desc' => 'Thức ăn dạng hạt chìm'],
-                ['label' => 'Trọng lượng TB tôm', 'value' => '12,5 g', 'desc' => 'Tăng trưởng +1.2g/tuần'],
+                ['label' => 'Trọng lượng TB tôm', 'value' => '12,5 g', 'desc' => 'Tăng trưởng tốt'],
                 ['label' => 'Số lần Xiphong', 'value' => '3 Lần/ngày', 'desc' => 'Vệ sinh đáy ao tốt']
             ],
-            'columns' => ['Thời Gian', 'Ao Nuôi', 'Lượng Thức Ăn', 'Trọng Lượng TB', 'Tỉ Lệ Sống Ước Tính', 'Kỹ Thuật Viên', 'Thao Tác Kỹ Thuật'],
-            'rows' => [
-                ['time' => 'Hôm nay 08:30', 'pond' => 'Ao Rearing 01', 'feed' => '45 kg', 'weight' => '14.2 g', 'survival' => '88%', 'ktv' => 'Nguyễn Văn Hùng', 'note' => 'Xiphong đáy ao, thay nước 10%'],
-                ['time' => 'Hôm nay 07:15', 'pond' => 'Ao Rearing 02', 'feed' => '35 kg', 'weight' => '11.8 g', 'survival' => '92%', 'ktv' => 'Trần Quốc Bảo', 'note' => 'Bổ sung khoáng vi lượng, vôi CaO'],
-                ['time' => 'Hôm qua 16:00', 'pond' => 'Ao Rearing 03', 'feed' => '50 kg', 'weight' => '9.5 g', 'survival' => '95%', 'ktv' => 'Nguyễn Văn Hùng', 'note' => 'Cho ăn cữ cuối, tăng cường quạt oxy']
-            ]
+            'columns' => ['Thời Gian', 'Ao Nuôi', 'Lượng Thức Ăn', 'Trọng Lượng TB', 'Tỉ Lệ Sống Ước Tính', 'Ghi Chú Kỹ Thuật'],
+            'rows' => []
         ],
         'Quản lý chỉ số nước' => [
             'stats' => [
@@ -50,96 +46,68 @@
                 ['label' => 'Cảnh báo chỉ số', 'value' => '2 Ao nuôi', 'desc' => 'Khí độc NH3 cao nhẹ'],
                 ['label' => 'Oxy hòa tan TB', 'value' => '5.2 mg/L', 'desc' => 'Ngưỡng an toàn (>4.5)']
             ],
-            'columns' => ['Thời Gian', 'Ao Nuôi', 'pH', 'Oxy (DO)', 'Độ Mặn', 'Khí Độc NH₃', 'Khí Độc H₂S', 'Đánh Giá'],
-            'rows' => [
-                ['time' => 'Hôm nay 09:00', 'pond' => 'Ao Rearing 01', 'ph' => '7.8', 'do' => '5.2 mg/L', 'salinity' => '15 ppt', 'nh3' => '0.01 mg/L', 'h2s' => '0.002 mg/L', 'status' => 'An toàn', 'status_type' => 'success'],
-                ['time' => 'Hôm nay 08:45', 'pond' => 'Ao Rearing 02', 'ph' => '8.2', 'do' => '4.1 mg/L', 'salinity' => '14 ppt', 'nh3' => '0.25 mg/L', 'h2s' => '0.05 mg/L', 'status' => 'Cảnh báo', 'status_type' => 'warning'],
-                ['time' => 'Hôm nay 08:30', 'pond' => 'Ao Rearing 03', 'ph' => '7.5', 'do' => '5.8 mg/L', 'salinity' => '16 ppt', 'nh3' => '0.02 mg/L', 'h2s' => '0.001 mg/L', 'status' => 'An toàn', 'status_type' => 'success']
-            ]
+            'columns' => [],
+            'rows' => []
         ],
         'Vật tư & Kho' => [
             'stats' => [
                 ['label' => 'Tổng mặt hàng tồn', 'value' => '24 Sản phẩm', 'desc' => 'Thức ăn, hóa chất, thiết bị'],
-                ['label' => 'Tổng giá trị tồn kho', 'value' => '185.000.000đ', 'desc' => 'Kiểm kê ngày 01/06'],
+                ['label' => 'Tổng giá trị tồn kho', 'value' => '185.000.000đ', 'desc' => 'Kiểm kê thường xuyên'],
                 ['label' => 'Cảnh báo sắp hết', 'value' => '3 Mặt hàng', 'desc' => 'Dưới định mức tối thiểu'],
-                ['label' => 'Số lượt xuất kho', 'value' => '14 Lượt/tuần', 'desc' => 'Chủ yếu phục vụ cữ ăn']
+                ['label' => 'Số lượt xuất kho', 'value' => '14 Lượt/tuần', 'desc' => 'Phục vụ vụ nuôi']
             ],
-            'columns' => ['Tên Vật Tư', 'Phân Loại', 'Số Lượng Tồn', 'Đơn Vị', 'Vị Trí Kho', 'Định Mức Tối Thiểu', 'Tình Trạng'],
-            'rows' => [
-                ['name' => 'Thức ăn GrowMax 02', 'type' => 'Thức ăn tôm', 'qty' => '1,200', 'unit' => 'Bao (25kg)', 'loc' => 'Kho Vật Tư A', 'min' => '200 Bao', 'status' => 'Còn hàng', 'status_type' => 'success'],
-                ['name' => 'Khoáng bột AquaMineral', 'type' => 'Hóa chất / Khoáng', 'qty' => '12', 'unit' => 'Bao (10kg)', 'loc' => 'Kho Hóa Chất B', 'min' => '50 Bao', 'status' => 'Sắp hết', 'status_type' => 'warning'],
-                ['name' => 'Men vi sinh BioPro', 'type' => 'Chế phẩm sinh học', 'qty' => '0', 'unit' => 'Hộp (1kg)', 'loc' => 'Kho Hóa Chất B', 'min' => '10 Hộp', 'status' => 'Hết hàng', 'status_type' => 'danger']
-            ]
+            'columns' => ['Tên Vật Tư', 'Phân Loại', 'Số Lượng Tồn', 'Đơn Vị', 'Đơn Giá', 'Tình Trạng'],
+            'rows' => []
         ],
         'Nhà cung cấp' => [
             'stats' => [
-                ['label' => 'Tổng nhà cung cấp', 'value' => '12 Đối tác', 'desc' => 'Trong nước & Nhập khẩu'],
-                ['label' => 'Công nợ hiện tại', 'value' => '92.400.000đ', 'desc' => 'Kỳ hạn thanh toán T6'],
+                ['label' => 'Tổng nhà cung cấp', 'value' => $allSuppliers->count() . ' Đối tác', 'desc' => 'Trong nước & Nhập khẩu'],
+                ['label' => 'Tổng công nợ hiện tại', 'value' => number_format($allSuppliers->sum('debt')) . 'đ', 'desc' => 'Kỳ hạn thanh toán T6'],
                 ['label' => 'Tỉ lệ giao đúng hẹn', 'value' => '98%', 'desc' => 'Đánh giá chất lượng vận chuyển'],
                 ['label' => 'Đã ký hợp đồng', 'value' => '5 Doanh nghiệp', 'desc' => 'Giá ưu đãi dài hạn']
             ],
-            'columns' => ['Tên Nhà Cung Cấp', 'Danh Mục Cung Cấp', 'Số Điện Thoại', 'Địa Chỉ Liên Hệ', 'Công Nợ', 'Trạng Thái'],
-            'rows' => [
-                ['name' => 'Công ty TNHH C.P. Việt Nam', 'supply' => 'Tôm giống, Thức ăn chăn nuôi', 'phone' => '0291-3829-xxx', 'address' => 'KCN Trà Nóc, Cần Thơ', 'debt' => '45.000.000đ', 'status' => 'Đang hợp tác', 'status_type' => 'success'],
-                ['name' => 'Tập đoàn Thủy sản Việt Úc', 'supply' => 'Tôm giống công nghệ cao', 'phone' => '1900 7878', 'address' => 'Phan Thiết, Bình Thuận', 'debt' => '0đ', 'status' => 'Đang hợp tác', 'status_type' => 'success'],
-                ['name' => 'Đại lý Vật tư Thủy sản Aqua Bạc Liêu', 'supply' => 'Vôi, khoáng, chế phẩm vi sinh', 'phone' => '0918-234-xxx', 'address' => 'TP. Bạc Liêu, Bạc Liêu', 'debt' => '47.400.000đ', 'status' => 'Đang hợp tác', 'status_type' => 'success']
-            ]
+            'columns' => ['Tên Nhà Cung Cấp', 'Danh Mục Cung Cấp', 'Số Điện Thoại', 'Địa Chỉ Liên Hệ', 'STK Ngân Hàng', 'Công Nợ'],
+            'rows' => []
         ],
         'Quản lý thu hoạch' => [
             'stats' => [
                 ['label' => 'Đã thu hoạch', 'value' => '12,8 Tấn', 'desc' => 'Vụ nuôi 2026'],
                 ['label' => 'Kích cỡ trung bình', 'value' => '45 con/kg', 'desc' => 'Tôm thương phẩm loại 1'],
-                ['label' => 'Doanh thu tạm tính', 'value' => '1,92 Tỷ VND', 'desc' => 'Dựa trên giá thương lái chốt'],
-                ['label' => 'Tỉ lệ hao hụt', 'value' => '8%', 'desc' => 'Nằm trong ngưỡng cho phép (<15%)']
+                ['label' => 'Doanh thu tạm tính', 'value' => '1,92 Tỷ VND', 'desc' => 'Thương lái chốt giá'],
+                ['label' => 'Tỉ lệ hao hụt', 'value' => '8%', 'desc' => 'Ngưỡng cho phép (<15%)']
             ],
             'columns' => ['Mã Thu Hoạch', 'Ao Nuôi', 'Ngày Thu Hoạch', 'Sản Lượng', 'Kích Cỡ (Size)', 'Hình Thức Thu', 'Doanh Thu'],
-            'rows' => [
-                ['code' => 'TH-2026-001', 'pond' => 'Ao Rearing 05', 'date' => '10/05/2026', 'qty' => '4.2 Tấn', 'size' => '38 con/kg', 'type' => 'Thu toàn bộ', 'revenue' => '672.000.000đ'],
-                ['code' => 'TH-2026-002', 'pond' => 'Ao Rearing 02', 'date' => '22/05/2026', 'qty' => '2.5 Tấn', 'size' => '55 con/kg', 'type' => 'Thu tỉa bớt', 'revenue' => '350.000.000đ'],
-                ['code' => 'TH-2026-003', 'pond' => 'Ao Rearing 04', 'date' => '01/06/2026', 'qty' => '6.1 Tấn', 'size' => '42 con/kg', 'type' => 'Thu toàn bộ', 'revenue' => '898.000.000đ']
-            ]
+            'rows' => []
         ],
         'Quản lý bán hàng' => [
             'stats' => [
-                ['label' => 'Doanh số tháng này', 'value' => '1.240.000.000đ', 'desc' => 'Tăng 15% so với cùng kỳ'],
-                ['label' => 'Đã thu tiền mặt/CK', 'value' => '1.050.000.000đ', 'desc' => 'Tỉ lệ thu hồi nợ 84%'],
-                ['label' => 'Công nợ chưa thu', 'value' => '190.000.000đ', 'desc' => 'Chủ yếu từ thương lái quen'],
-                ['label' => 'Sản lượng đã bán', 'value' => '12.800 kg', 'desc' => 'Giá bán trung bình 150k/kg']
+                ['label' => 'Doanh số thực tế', 'value' => number_format($allCustomers->sum('debt')) . 'đ', 'desc' => 'Tổng giá trị hóa đơn'],
+                ['label' => 'Đã thu tiền mặt/CK', 'value' => '1.050.000.000đ', 'desc' => 'Tỉ lệ thu hồi nợ cao'],
+                ['label' => 'Công nợ chưa thu', 'value' => number_format($allCustomers->sum('debt')) . 'đ', 'desc' => 'Công nợ từ thương lái'],
+                ['label' => 'Sản lượng đã bán', 'value' => '12.800 kg', 'desc' => 'Giá trung bình 150k/kg']
             ],
-            'columns' => ['Mã Hóa Đơn', 'Tên Thương Lái / Đơn Vị', 'Ngày Giao Dịch', 'Sản Lượng', 'Đơn Giá TB', 'Tổng Tiền', 'Thanh Toán'],
-            'rows' => [
-                ['code' => 'HD-2026-041', 'buyer' => 'Thương lái Trần Văn Thành', 'date' => '10/05/2026', 'qty' => '4.200 kg', 'price' => '160.000đ/kg', 'total' => '672.000.000đ', 'status' => 'Đã thu tiền', 'status_type' => 'success'],
-                ['code' => 'HD-2026-042', 'buyer' => 'Công ty XNK Thủy sản Minh Phú', 'date' => '22/05/2026', 'qty' => '2.500 kg', 'price' => '140.000đ/kg', 'total' => '350.000.000đ', 'status' => 'Đã thu tiền', 'status_type' => 'success'],
-                ['code' => 'HD-2026-043', 'buyer' => 'Thương lái Nguyễn Thị Lan', 'date' => '01/06/2026', 'qty' => '6.100 kg', 'price' => '147.200đ/kg', 'total' => '898.000.000đ', 'status' => 'Nợ gối đầu', 'status_type' => 'warning']
-            ]
+            'columns' => ['Mã Hóa Đơn', 'Khách Hàng', 'Ngày Giao Dịch', 'Tổng Tiền', 'Đã Thanh Toán', 'Còn Lại', 'Trạng Thái'],
+            'rows' => []
         ],
         'Quản lý khách hàng' => [
             'stats' => [
-                ['label' => 'Tổng số khách hàng', 'value' => '18 Khách hàng', 'desc' => 'Thương lái tự do & Doanh nghiệp'],
+                ['label' => 'Tổng số khách hàng', 'value' => $allCustomers->count() . ' Khách hàng', 'desc' => 'Thương lái & Doanh nghiệp'],
                 ['label' => 'Sản lượng tiêu thụ', 'value' => '35 Tấn/năm', 'desc' => 'Thị trường nội địa & Xuất khẩu'],
-                ['label' => 'Khách hàng VIP', 'value' => '6 Đối tác', 'desc' => 'Có thỏa thuận bao tiêu'],
-                ['label' => 'Hài lòng dịch vụ', 'value' => '100%', 'desc' => 'Không có khiếu nại về size tôm']
+                ['label' => 'Khách hàng VIP', 'value' => '6 Đối tác', 'desc' => 'Bao tiêu sản phẩm'],
+                ['label' => 'Tổng dư nợ khách hàng', 'value' => number_format($allCustomers->sum('debt')) . 'đ', 'desc' => 'Dư nợ hiện tại']
             ],
-            'columns' => ['Khách Hàng', 'Số Điện Thế', 'Đại Bàn Thu Mua', 'Tổng Sản Lượng Đã Mua', 'Doanh Số Tích Lũy', 'Phân Nhóm'],
-            'rows' => [
-                ['name' => 'Thương lái Trần Văn Thành', 'phone' => '0909-382-xxx', 'area' => 'Bạc Liêu, Sóc Trăng', 'qty' => '12.5 Tấn', 'revenue' => '1.850.000.000đ', 'status' => 'Đại lý VIP', 'status_type' => 'success'],
-                ['name' => 'Công ty XNK Thủy sản Minh Phú', 'phone' => '0291-3822xxx', 'area' => 'Cà Mau, Hậu Giang', 'qty' => '15.0 Tấn', 'revenue' => '2.400.000.000đ', 'status' => 'Doanh nghiệp', 'status_type' => 'info'],
-                ['name' => 'Thương lái Nguyễn Thị Lan', 'phone' => '0913-928-xxx', 'area' => 'Bến Tre, Trà Vinh', 'qty' => '7.5 Tấn', 'revenue' => '1.120.000.000đ', 'status' => 'Thân thiết', 'status_type' => 'warning']
-            ]
+            'columns' => ['Khách Hàng', 'Số Điện Thoại', 'Địa Bàn Thu Mua', 'STK Ngân Hàng', 'Tổng Dư Nợ', 'Trạng Thái'],
+            'rows' => []
         ],
         'Chi phí vận hành' => [
             'stats' => [
                 ['label' => 'Chi phí tháng này', 'value' => '142.500.000đ', 'desc' => 'Đã duyệt toàn bộ'],
                 ['label' => 'Danh mục chi lớn nhất', 'value' => 'Tiền điện (45%)', 'desc' => 'Chạy quạt oxy liên tục'],
-                ['label' => 'Đã thực hiện chi', 'value' => '128.000.000đ', 'desc' => 'Qua hình thức CK doanh nghiệp'],
+                ['label' => 'Đã thực hiện chi', 'value' => '128.000.000đ', 'desc' => 'Chuyển khoản doanh nghiệp'],
                 ['label' => 'Chi phí phát sinh', 'value' => '14.500.000đ', 'desc' => 'Bảo trì sửa chữa cánh quạt']
             ],
-            'columns' => ['Mã Phiếu', 'Ngày Chi', 'Danh Mục Chi', 'Chi Tiết Nghiệp Vụ', 'Số Tiền Chi', 'Trạng Thái'],
-            'rows' => [
-                ['code' => 'CP-0098', 'date' => '05/06/2026', 'category' => 'Điện & Năng lượng', 'desc' => 'Thanh toán tiền điện trạm hạ thế tháng 05', 'amount' => '54.200.000đ', 'status' => 'Đã chi', 'status_type' => 'success'],
-                ['code' => 'CP-0099', 'date' => '06/06/2026', 'category' => 'Nhiên liệu', 'desc' => 'Mua 500 lít dầu Diesel chạy máy phát dự phòng', 'amount' => '10.800.000đ', 'status' => 'Đã chi', 'status_type' => 'success'],
-                ['code' => 'CP-0100', 'date' => '08/06/2026', 'category' => 'Nhân sự', 'desc' => 'Thanh toán lương kỹ thuật và công nhân đợt 1', 'amount' => '65.000.000đ', 'status' => 'Đã chi', 'status_type' => 'success']
-            ]
+            'columns' => ['Mã Phiếu', 'Ngày Chi', 'Danh Mục Chi', 'Chi Tiết Nghiệp Vụ', 'Số Tiền Chi', 'Phương Thức Phân Bổ'],
+            'rows' => []
         ],
         default => [
             'stats' => [],
@@ -148,7 +116,7 @@
         ]
     };
 
-    // If items are loaded from database, override standard rows with real data
+    // Populate dynamic rows from database if items collection exists
     if (isset($items) && $items->isNotEmpty()) {
         $realRows = [];
         foreach ($items as $item) {
@@ -178,19 +146,7 @@
                     'feed' => number_format($item->feed_amount) . ' kg',
                     'weight' => number_format($item->shrimp_size, 1) . ' g',
                     'survival' => number_format($item->estimated_survival) . '%',
-                    'ktv' => 'Nguyễn Văn Hùng',
                     'note' => $item->notes ?? 'Bình thường'
-                ],
-                'Quản lý chỉ số nước' => [
-                    'time' => \Carbon\Carbon::parse($item->date)->format('d/m/Y') . ' ' . $item->time,
-                    'pond' => $item->sampling_location,
-                    'ph' => number_format($item->ph, 1),
-                    'do' => number_format($item->transparency, 1) . ' mg/L',
-                    'salinity' => number_format($item->salinity) . ' ppt',
-                    'nh3' => number_format($item->tidal_peak, 2) . ' mg/L',
-                    'h2s' => number_format($item->water_level, 3) . ' mg/L',
-                    'status' => 'Đã đo',
-                    'status_type' => 'success'
                 ],
                 'Vật tư & Kho' => [
                     'name' => $item->name,
@@ -203,19 +159,23 @@
                     },
                     'qty' => number_format($item->stock_quantity),
                     'unit' => $item->unit,
-                    'loc' => 'Kho chính',
-                    'min' => '50 đơn vị',
-                    'status' => $item->stock_quantity > 0 ? 'Còn hàng' : 'Hết hàng',
-                    'status_type' => $item->stock_quantity > 0 ? 'success' : 'danger'
+                    'unit_price' => number_format($item->unit_price) . 'đ',
+                    'status' => $item->stock_quantity > 100 ? 'Còn hàng' : ($item->stock_quantity > 0 ? 'Sắp hết' : 'Hết hàng'),
+                    'status_type' => $item->stock_quantity > 100 ? 'success' : ($item->stock_quantity > 0 ? 'warning' : 'danger')
                 ],
                 'Nhà cung cấp' => [
                     'name' => $item->name,
-                    'supply' => $item->supply_type ?? 'Tổng hợp',
+                    'supply' => match($item->supply_type) {
+                        'seeds' => 'Tôm giống',
+                        'feed' => 'Thức ăn',
+                        'materials' => 'Vật tư',
+                        'chemicals' => 'Hóa chất',
+                        default => 'Tổng hợp'
+                    },
                     'phone' => $item->phone ?? '-',
                     'address' => $item->address ?? '-',
+                    'bank' => $item->bank_account ?? '-',
                     'debt' => number_format($item->debt) . 'đ',
-                    'status' => 'Đang hoạt động',
-                    'status_type' => 'success'
                 ],
                 'Quản lý thu hoạch' => [
                     'code' => 'TH-' . $item->id,
@@ -230,79 +190,237 @@
                     'code' => $item->invoice_number,
                     'buyer' => $item->customer->name ?? 'N/A',
                     'date' => \Carbon\Carbon::parse($item->invoice_date)->format('d/m/Y'),
-                    'qty' => number_format($item->harvest->weight ?? 0) . ' kg',
-                    'price' => number_format($item->harvest->unit_price ?? 0) . 'đ/kg',
                     'total' => number_format($item->total_amount) . 'đ',
-                    'status' => $item->status === 'paid' ? 'Đã thu tiền' : 'Nợ gối đầu',
+                    'paid' => number_format($item->paid_amount) . 'đ',
+                    'rem' => number_format($item->total_amount - $item->paid_amount) . 'đ',
+                    'status' => $item->status === 'paid' ? 'Đã thanh toán' : 'Nợ gối đầu',
                     'status_type' => $item->status === 'paid' ? 'success' : 'warning'
                 ],
                 'Quản lý khách hàng' => [
                     'name' => $item->name,
                     'phone' => $item->phone ?? '-',
                     'area' => $item->address ?? '-',
-                    'qty' => 'Liên kết bán hàng',
-                    'revenue' => number_format($item->debt) . 'đ',
-                    'status' => $item->debt > 0 ? 'Có dư nợ' : 'Đã đối soát',
+                    'bank' => $item->bank_account ?? '-',
+                    'debt' => number_format($item->debt) . 'đ',
+                    'status' => $item->debt > 0 ? 'Có dư nợ' : 'Đã thanh toán',
                     'status_type' => $item->debt > 0 ? 'warning' : 'success'
                 ],
                 'Chi phí vận hành' => [
                     'code' => 'CP-' . $item->id,
                     'date' => \Carbon\Carbon::parse($item->date)->format('d/m/Y'),
-                    'category' => $item->expense_type,
+                    'category' => match($item->expense_type) {
+                        'electricity' => 'Điện & Năng lượng',
+                        'feed' => 'Thức ăn',
+                        'salary' => 'Lương nhân sự',
+                        'fuel' => 'Nhiên liệu',
+                        'maintenance' => 'Bảo trì ao',
+                        default => 'Chi phí khác'
+                    },
                     'desc' => $item->description ?? '-',
                     'amount' => number_format($item->amount) . 'đ',
-                    'status' => $item->status === 'paid' ? 'Đã chi' : 'Chờ duyệt',
-                    'status_type' => $item->status === 'paid' ? 'success' : 'warning'
+                    'method' => $item->allocation_method === 'direct' ? 'Phân bổ trực tiếp' : 'Chia đều diện tích'
                 ],
                 default => []
             };
         }
         $config['rows'] = $realRows;
     }
+    $canWrite = match($title) {
+        'Quản lý vụ nuôi' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('system_admin') || Auth::user()->hasRole('technician'),
+        'Quản lý thả giống' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('technician'),
+        'Nhật ký kỹ thuật ao' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('technician'),
+        'Quản lý chỉ số nước' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('technician'),
+        'Vật tư & Kho' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('warehouse_staff') || Auth::user()->hasRole('technician'),
+        'Nhà cung cấp' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('warehouse_staff') || Auth::user()->hasRole('accountant'),
+        'Quản lý thu hoạch' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('harvester') || Auth::user()->hasRole('technician'),
+        'Quản lý bán hàng' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('accountant'),
+        'Quản lý khách hàng' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('accountant'),
+        'Chi phí vận hành' => Auth::user()->hasRole('owner') || Auth::user()->hasRole('accountant'),
+        default => false
+    };
 @endphp
 
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-bold text-xl text-slate-800 leading-tight">
-                {{ $title }}
-            </h2>
-            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center space-x-1.5">
-                <svg class="w-4 h-4 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                </svg>
-                <span>Thêm dữ liệu mới</span>
-            </button>
-        </div>
-    </x-slot>
-
-    <div class="space-y-6">
-        <!-- Module Description & Warning Alert -->
-        <div class="bg-slate-800 text-slate-100 rounded-2xl p-5 border border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div x-data="{ showAddModal: false, activeTab: 'ao_nuoi' }" class="space-y-6">
+        
+        <!-- Header Page Section -->
+        <div class="flex items-center justify-between bg-white p-6 rounded-2xl border border-slate-200/85 shadow-sm">
             <div class="space-y-1">
-                <span class="px-2.5 py-0.5 text-[9px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 rounded uppercase tracking-wider">Module Nghiệp Vụ</span>
-                <p class="text-sm text-slate-350 leading-relaxed max-w-3xl pt-1">
-                    {{ $description }}
+                <div class="flex items-center space-x-2.5">
+                    <div class="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
+                        {!! $icon ?? '' !!}
+                    </div>
+                    <h2 class="font-bold text-xl text-slate-800 tracking-tight">
+                        {{ $title }}
+                    </h2>
+                </div>
+                <p class="text-xs text-slate-500 max-w-2xl mt-1 leading-relaxed">
+                    {{ $description ?? '' }}
                 </p>
             </div>
-            <div class="flex items-center space-x-2 shrink-0 bg-slate-900/50 border border-slate-700/60 px-4 py-2 rounded-xl text-xs text-slate-400">
-                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                <span class="font-medium">Chế độ xem trước dữ liệu mẫu</span>
-            </div>
+            @if($canWrite)
+                <button @click="showAddModal = true" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center space-x-1.5 hover:shadow-lg hover:shadow-indigo-500/15">
+                    <svg class="w-4 h-4 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    <span>Thêm dữ liệu mới</span>
+                </button>
+            @else
+                <div class="px-4 py-2 bg-slate-50 border border-slate-200 text-slate-400 font-semibold text-xs rounded-xl flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"></path>
+                    </svg>
+                    <span>Chỉ xem (Read-Only)</span>
+                </div>
+            @endif
         </div>
 
-        <!-- Dynamic Stats Grid -->
+        <!-- Stats Cards Row -->
         @if(!empty($config['stats']))
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach($config['stats'] as $stat)
-                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-2.5 hover:shadow-md transition-shadow">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
                         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{{ $stat['label'] }}</span>
-                        <div class="flex items-baseline space-x-2">
-                            <span class="text-2xl font-black text-slate-900 leading-none">{{ $stat['value'] }}</span>
+                        <div class="flex items-baseline space-x-1">
+                            <span class="text-base font-extrabold text-slate-800 tracking-tight">{{ $stat['value'] }}</span>
                         </div>
-                        <span class="text-xs text-slate-500 block font-normal">{{ $stat['desc'] }}</span>
+                        <span class="text-[10px] text-slate-500 font-medium block mt-0.5">{{ $stat['desc'] }}</span>
                     </div>
                 @endforeach
+            </div>
+        @endif
+
+        <!-- Dynamic Custom Modules Widgets -->
+        @if($title === 'Quản lý chỉ số nước')
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Real-time Alerts Widget -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Hệ thống cảnh báo đỏ tức thời</h3>
+                        <span class="flex h-2 w-2 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                        </span>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div class="p-3 bg-rose-50/60 border border-rose-100 rounded-xl text-rose-800 text-xs flex items-start space-x-2.5">
+                            <span class="text-sm">⚠️</span>
+                            <div>
+                                <span class="font-bold">Ao Rearing 02</span>
+                                <p class="text-[10px] text-rose-600 mt-0.5">Khí độc NH₃ vượt ngưỡng an toàn (0.25 mg/L). Cần cấp cứu oxy và bón vi sinh xử lý đáy ao.</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-amber-50/60 border border-amber-100 rounded-xl text-amber-800 text-xs flex items-start space-x-2.5">
+                            <span class="text-sm">⚠️</span>
+                            <div>
+                                <span class="font-bold">Ao Rearing 02</span>
+                                <p class="text-[10px] text-amber-600 mt-0.5">Độ pH tăng cao nhẹ (8.2). Theo dõi sát cữ chiều.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Temperature Comparison Chart -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Biểu đồ so sánh nhiệt độ nước vs nhiệt độ không khí</h3>
+                        <span class="text-[10px] text-slate-400 font-semibold">Đơn vị đo: °C</span>
+                    </div>
+                    <div class="relative h-44">
+                        <canvas id="waterAirTempChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs for Ao Nuoi vs Ao Lang vs Cau Cap -->
+            <div class="flex space-x-2 bg-slate-100 p-1 rounded-xl w-fit">
+                <button @click="activeTab = 'ao_nuoi'" 
+                        :class="activeTab === 'ao_nuoi' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'"
+                        class="px-4 py-2 rounded-lg text-xs font-semibold transition-all">
+                    Chỉ số Ao Nuôi
+                </button>
+                <button @click="activeTab = 'ao_lang'" 
+                        :class="activeTab === 'ao_lang' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'"
+                        class="px-4 py-2 rounded-lg text-xs font-semibold transition-all">
+                    Chỉ số Ao Lắng
+                </button>
+                <button @click="activeTab = 'cau_cap'" 
+                        :class="activeTab === 'cau_cap' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'"
+                        class="px-4 py-2 rounded-lg text-xs font-semibold transition-all">
+                    Mực nước Cầu Cấp
+                </button>
+            </div>
+        @endif
+
+        @if($title === 'Chi phí vận hành')
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Allocation Rule Widget -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Quy tắc phân bổ chi phí</h3>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-150">
+                            <span class="font-bold text-slate-700 block">Phân bổ đích danh (Direct)</span>
+                            <span class="text-[10px] text-slate-400 mt-0.5 block">100% chi phí được ghi nhận trực tiếp cho 1 ao nuôi hoặc khu nuôi cụ thể.</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-150">
+                            <span class="font-bold text-slate-700 block">Phân bổ chia đều (Equal Split)</span>
+                            <span class="text-[10px] text-slate-400 mt-0.5 block">Chi phí chung (điện, nước sinh hoạt) được hệ thống tự động chia đều theo diện tích hoặc số ao hoạt động.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expense Distribution Chart -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-3">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Cơ cấu phân bố chi phí vận hành</h3>
+                    <div class="relative h-44">
+                        <canvas id="expenseDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if($title === 'Vật tư & Kho')
+            <!-- Material Warnings -->
+            <div class="bg-amber-50 border border-amber-200/60 rounded-2xl p-4 flex items-start space-x-3 text-xs text-amber-800">
+                <span class="text-base">⚠️</span>
+                <div>
+                    <span class="font-bold">Cảnh báo tồn kho dưới hạn mức tối thiểu</span>
+                    <p class="text-[10px] text-amber-600 mt-0.5">Hiện tại có 2 vật tư đã xuống dưới định mức tối thiểu hoặc hết hàng (Men vi sinh BioPro, Khoáng bột AquaMineral). Vui lòng lập phiếu đề xuất nhập kho bổ sung.</p>
+                </div>
+            </div>
+        @endif
+
+        @if($title === 'Quản lý vụ nuôi')
+            <!-- Cultivation cycle timeline -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
+                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Quy trình lộ trình vụ nuôi tiêu chuẩn</h3>
+                <div class="relative flex items-center justify-between text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                    <div class="absolute left-0 right-0 h-0.5 bg-slate-100 top-1/2 -translate-y-1/2 -z-10"></div>
+                    <div class="flex flex-col items-center space-y-1 bg-white px-2">
+                        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center">1</span>
+                        <span>Khởi tạo</span>
+                    </div>
+                    <div class="flex flex-col items-center space-y-1 bg-white px-2">
+                        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center">2</span>
+                        <span>Cải tạo ao</span>
+                    </div>
+                    <div class="flex flex-col items-center space-y-1 bg-white px-2">
+                        <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center">3</span>
+                        <span>Thả giống</span>
+                    </div>
+                    <div class="flex flex-col items-center space-y-1 bg-white px-2 text-indigo-600">
+                        <span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center">4</span>
+                        <span class="font-black">Đang nuôi</span>
+                    </div>
+                    <div class="flex flex-col items-center space-y-1 bg-white px-2">
+                        <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center">5</span>
+                        <span>Thu hoạch</span>
+                    </div>
+                    <div class="flex flex-col items-center space-y-1 bg-white px-2">
+                        <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center">6</span>
+                        <span>Kết thúc</span>
+                    </div>
+                </div>
             </div>
         @endif
 
@@ -336,70 +454,205 @@
 
             <!-- Table of Mock Data -->
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
-                    <thead>
-                        <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
-                            @foreach($config['columns'] as $col)
-                                <th class="py-4 px-6">{{ $col }}</th>
-                            @endforeach
-                            <th class="py-4 px-6 text-right">Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 text-slate-650 font-medium">
-                        @forelse($config['rows'] as $row)
-                            <tr class="hover:bg-slate-50/40 transition-colors">
-                                @foreach($row as $key => $val)
-                                    @if($key !== 'status_type')
-                                        <td class="py-4 px-6">
-                                            @if($key === 'code')
-                                                <span class="font-mono font-bold text-slate-700">{{ $val }}</span>
-                                            @elseif($key === 'status')
-                                                @php
-                                                    $badgeType = $row['status_type'] ?? 'info';
-                                                    $colorClasses = match($badgeType) {
-                                                        'success' => 'text-emerald-700 bg-emerald-50/65 border-emerald-200/60',
-                                                        'warning' => 'text-amber-700 bg-amber-50/65 border-amber-200/60',
-                                                        'danger' => 'text-rose-700 bg-rose-50/65 border-rose-200/60',
-                                                        default => 'text-indigo-700 bg-indigo-50/65 border-indigo-200/60'
-                                                    };
-                                                @endphp
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border {{ $colorClasses }}">
-                                                    {{ $val }}
-                                                </span>
-                                            @else
-                                                <span class="text-slate-800 font-semibold">{{ $val }}</span>
-                                            @endif
-                                        </td>
-                                    @endif
+                @if($title === 'Quản lý chỉ số nước')
+                    <!-- Tab 1: Chỉ số Ao Nuôi -->
+                    <table x-show="activeTab === 'ao_nuoi'" class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                <th class="py-4 px-6">Thời Gian</th>
+                                <th class="py-4 px-6">Ao Nuôi</th>
+                                <th class="py-4 px-6">pH</th>
+                                <th class="py-4 px-6">Oxy (DO)</th>
+                                <th class="py-4 px-6">Độ Mặn</th>
+                                <th class="py-4 px-6">Khí Độc NH₃</th>
+                                <th class="py-4 px-6">Khí Độc H₂S</th>
+                                <th class="py-4 px-6">Đánh Giá</th>
+                                <th class="py-4 px-6 text-right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-650 font-medium">
+                            @php
+                                $aoNuoiLogs = $items->filter(function($i) {
+                                    return str_contains($i->sampling_location, 'Ao Rearing') || str_contains($i->sampling_location, 'Ao Gièo');
+                                });
+                            @endphp
+                            @forelse($aoNuoiLogs as $log)
+                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                    <td class="py-4 px-6 font-semibold text-slate-800">{{ \Carbon\Carbon::parse($log->date)->format('d/m/Y') }} {{ $log->time }}</td>
+                                    <td class="py-4 px-6 font-bold text-indigo-600">{{ $log->sampling_location }}</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->ph, 1) }}</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->transparency, 1) }} mg/L</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->salinity) }} ppt</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ $log->tidal_peak ? number_format($log->tidal_peak, 2) . ' mg/L' : '-' }}</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ $log->water_level ? number_format($log->water_level, 2) . ' mg/L' : '-' }}</td>
+                                    <td class="py-4 px-6">
+                                        @if($log->ph > 8.0 || ($log->tidal_peak && $log->tidal_peak > 0.2))
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border text-rose-700 bg-rose-50 border-rose-200">Cảnh báo</span>
+                                        @else
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border text-emerald-700 bg-emerald-50 border-emerald-200">An toàn</span>
+                                        @endif
+                                    </td>
+                                    <td class="py-4 px-6 text-right">
+                                        <div class="inline-flex items-center space-x-1.5">
+                                            <button title="Xem chi tiết" class="p-1.5 border border-slate-200 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-800 transition-all">
+                                                <svg class="w-3.5 h-3.5 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="9" class="py-12 text-center text-slate-400">Không có dữ liệu ao nuôi.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+
+                    <!-- Tab 2: Chỉ số Ao Lắng -->
+                    <table x-show="activeTab === 'ao_lang'" class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                <th class="py-4 px-6">Thời Gian</th>
+                                <th class="py-4 px-6">Vị Trí Ao Lắng</th>
+                                <th class="py-4 px-6">Độ Mặn</th>
+                                <th class="py-4 px-6">pH</th>
+                                <th class="py-4 px-6">Độ Trong</th>
+                                <th class="py-4 px-6">Đánh Giá</th>
+                                <th class="py-4 px-6 text-right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-650 font-medium">
+                            @php
+                                $aoLangLogs = $items->filter(function($i) {
+                                    return str_contains($i->sampling_location, 'Ao Lắng');
+                                });
+                            @endphp
+                            @forelse($aoLangLogs as $log)
+                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                    <td class="py-4 px-6 font-semibold text-slate-800">{{ \Carbon\Carbon::parse($log->date)->format('d/m/Y') }} {{ $log->time }}</td>
+                                    <td class="py-4 px-6 font-bold text-teal-600">{{ $log->sampling_location }}</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->salinity, 1) }} ppt</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->ph, 1) }}</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->transparency) }} cm</td>
+                                    <td class="py-4 px-6">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border text-emerald-700 bg-emerald-50 border-emerald-200">Đạt chuẩn</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right">
+                                        <div class="inline-flex items-center space-x-1.5">
+                                            <button title="Xem chi tiết" class="p-1.5 border border-slate-200 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-800 transition-all">
+                                                <svg class="w-3.5 h-3.5 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="7" class="py-12 text-center text-slate-400">Không có dữ liệu ao lắng.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+
+                    <!-- Tab 3: Mực nước Cầu Cấp -->
+                    <table x-show="activeTab === 'cau_cap'" class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                <th class="py-4 px-6">Thời Gian</th>
+                                <th class="py-4 px-6">Vị Trí Cầu Cấp</th>
+                                <th class="py-4 px-6">Mực Nước (m)</th>
+                                <th class="py-4 px-6">Đỉnh Thủy Triều (m)</th>
+                                <th class="py-4 px-6">Độ Mặn (ppt)</th>
+                                <th class="py-4 px-6">Đánh Giá</th>
+                                <th class="py-4 px-6 text-right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-650 font-medium">
+                            @php
+                                $cauCapLogs = $items->filter(function($i) {
+                                    return str_contains($i->sampling_location, 'Cầu Cấp');
+                                });
+                            @endphp
+                            @forelse($cauCapLogs as $log)
+                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                    <td class="py-4 px-6 font-semibold text-slate-800">{{ \Carbon\Carbon::parse($log->date)->format('d/m/Y') }} {{ $log->time }}</td>
+                                    <td class="py-4 px-6 font-bold text-sky-700">{{ $log->sampling_location }}</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->water_level, 2) }} m</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->tidal_peak, 2) }} m</td>
+                                    <td class="py-4 px-6 text-slate-800">{{ number_format($log->salinity, 1) }} ppt</td>
+                                    <td class="py-4 px-6">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border text-indigo-700 bg-indigo-50 border-indigo-200">Đầy đủ</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right">
+                                        <div class="inline-flex items-center space-x-1.5">
+                                            <button title="Xem chi tiết" class="p-1.5 border border-slate-200 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-800 transition-all">
+                                                <svg class="w-3.5 h-3.5 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="7" class="py-12 text-center text-slate-400">Không có dữ liệu mực nước cầu cấp.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                @else
+                    <!-- Other Modules Tables -->
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                @foreach($config['columns'] as $col)
+                                    <th class="py-4 px-6">{{ $col }}</th>
                                 @endforeach
-                                <td class="py-4 px-6 text-right">
-                                    <div class="inline-flex items-center space-x-1.5">
-                                        <button title="Xem chi tiết" class="p-1.5 border border-slate-200 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-800 transition-all">
-                                            <svg class="w-3.5 h-3.5 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            </svg>
-                                        </button>
-                                        <button title="Sửa đổi" class="p-1.5 border border-slate-200 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-800 transition-all">
-                                            <svg class="w-3.5 h-3.5 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.586 2.586L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
+                                <th class="py-4 px-6 text-right">Thao tác</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="10" class="py-12 text-center text-slate-400">Không có dữ liệu mẫu được tìm thấy.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-650 font-medium">
+                            @forelse($config['rows'] as $row)
+                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                    @foreach($row as $key => $val)
+                                        @if($key !== 'status_type')
+                                            <td class="py-4 px-6">
+                                                @if($key === 'code')
+                                                    <span class="font-mono font-bold text-slate-700">{{ $val }}</span>
+                                                @elseif($key === 'status')
+                                                    @php
+                                                        $badgeType = $row['status_type'] ?? 'info';
+                                                        $colorClasses = match($badgeType) {
+                                                            'success' => 'text-emerald-700 bg-emerald-50/65 border-emerald-200/60',
+                                                            'warning' => 'text-amber-700 bg-amber-50/65 border-amber-200/60',
+                                                            'danger' => 'text-rose-700 bg-rose-50/65 border-rose-200/60',
+                                                            default => 'text-indigo-700 bg-indigo-50/65 border-indigo-200/60'
+                                                        };
+                                                    @endphp
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border {{ $colorClasses }}">
+                                                        {{ $val }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-slate-800 font-semibold">{{ $val }}</span>
+                                                @endif
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                    <td class="py-4 px-6 text-right">
+                                        <div class="inline-flex items-center space-x-1.5">
+                                            <button title="Xem chi tiết" class="p-1.5 border border-slate-200 hover:bg-slate-50 rounded-lg text-slate-500 hover:text-slate-800 transition-all">
+                                                <svg class="w-3.5 h-3.5 stroke-[1.75]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="10" class="py-12 text-center text-slate-400 font-medium">Không có dữ liệu mẫu được tìm thấy. Vui lòng bấm thêm mới ở trên.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                @endif
             </div>
 
             <!-- Fake Pagination -->
             <div class="p-4 border-t border-slate-150 bg-slate-50/50 flex items-center justify-between text-slate-500 text-[11px] font-semibold">
-                <span>Hiển thị 1 đến {{ count($config['rows']) }} trong số {{ count($config['rows']) }} bản ghi mẫu</span>
+                <span>Hiển thị {{ count($config['rows']) ?: '0' }} bản ghi từ cơ sở dữ liệu</span>
                 <div class="inline-flex space-x-1">
                     <button class="px-2.5 py-1 border border-slate-200 rounded-lg bg-white text-slate-400 cursor-not-allowed">Trước</button>
                     <button class="px-2.5 py-1 border border-indigo-200 rounded-lg bg-indigo-50 text-indigo-700">1</button>
@@ -408,19 +661,727 @@
             </div>
         </div>
 
-        <!-- Checklist of features being developed -->
-        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Các chức năng nghiệp vụ đang trong lộ trình phát triển</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                @foreach($features as $feature)
-                    <div class="flex items-start space-x-3 bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm">
-                        <div class="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold shrink-0 mt-0.5">
-                            ✓
+        <!-- Premium Add Data Form Modal Overlay -->
+        <div x-show="showAddModal" 
+             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             x-cloak>
+            
+            <!-- Modal Body -->
+            <div @click.away="showAddModal = false" 
+                 class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-100 transform transition-all overflow-y-auto max-h-[85vh]"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95">
+                
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between border-b border-slate-150 pb-4 mb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+                            {!! $icon ?? '' !!}
                         </div>
-                        <span class="text-xs font-semibold text-slate-700">{{ $feature }}</span>
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900">
+                                @if($title === 'Quản lý chỉ số nước')
+                                    Ghi nhận chỉ số nước (<span x-text="activeTab === 'ao_nuoi' ? 'Ao Nuôi' : (activeTab === 'ao_lang' ? 'Ao Lắng' : 'Cầu Cấp')"></span>)
+                                @else
+                                    Thêm {{ $title }} Mới
+                                @endif
+                            </h3>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Nhập đầy đủ thông tin để ghi nhận vào cơ sở dữ liệu</p>
+                        </div>
                     </div>
-                @endforeach
+                    <button @click="showAddModal = false" class="text-slate-400 hover:text-slate-650 p-1.5 hover:bg-slate-100 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modals Form Contents -->
+                @if($title === 'Quản lý vụ nuôi')
+                    <form method="POST" action="{{ route('cultivation-cycles.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Mã vụ nuôi *</label>
+                                <input type="text" name="code" placeholder="VU-2026-X" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Tên vụ nuôi *</label>
+                                <input type="text" name="name" placeholder="Vụ Hè Thu 2026" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Ngày bắt đầu *</label>
+                                <input type="date" name="start_date" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Ngày kết thúc dự kiến</label>
+                                <input type="date" name="expected_end_date" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1">Trạng thái *</label>
+                            <select name="status" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl focus:outline-none focus:border-indigo-500">
+                                <option value="planning">Lập kế hoạch</option>
+                                <option value="active">Đang hoạt động</option>
+                                <option value="completed">Đã hoàn thành</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Quản lý thả giống')
+                    <form method="POST" action="{{ route('seed-batches.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Vụ nuôi liên kết *</label>
+                                <select name="cultivation_cycle_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allCycles as $cycle)
+                                        <option value="{{ $cycle->id }}">{{ $cycle->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1">Ao nuôi thả *</label>
+                                <select name="pond_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allPonds as $pond)
+                                        <option value="{{ $pond->id }}">{{ $pond->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Nhà cung cấp giống *</label>
+                                <select name="supplier_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allSuppliers as $sup)
+                                        <option value="{{ $sup->id }}">{{ $sup->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1">Mã lô giống *</label>
+                                <input type="text" name="lot_number" placeholder="LG-CP-009" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-1">Số lượng thả *</label>
+                                <input type="number" name="quantity" placeholder="300000" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Mật độ thả *</label>
+                                <input type="number" name="stocking_density" placeholder="150" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Loại tôm giống *</label>
+                                <input type="text" name="seed_type" value="Tôm thẻ chân trắng" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1">Ngày thả giống *</label>
+                            <input type="date" name="stocking_date" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Nhật ký kỹ thuật ao')
+                    <form method="POST" action="{{ route('technical-logs.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Vụ nuôi *</label>
+                                <select name="cultivation_cycle_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allCycles as $cycle)
+                                        <option value="{{ $cycle->id }}">{{ $cycle->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1">Ao nuôi *</label>
+                                <select name="pond_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allPonds as $pond)
+                                        <option value="{{ $pond->id }}">{{ $pond->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Ngày ghi nhận *</label>
+                                <input type="date" name="date" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Số lượng thức ăn (kg) *</label>
+                                <input type="number" name="feed_amount" placeholder="45" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Trọng lượng TB tôm (g) *</label>
+                                <input type="number" step="0.01" name="shrimp_size" placeholder="12.5" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Tỉ lệ sống ước tính (%) *</label>
+                                <input type="number" name="estimated_survival" placeholder="90" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1">Ghi chú kỹ thuật</label>
+                            <textarea name="notes" placeholder="Thay nước 10%, bổ sung khoáng bột..." class="w-full bg-white border border-slate-200 p-2.5 rounded-xl focus:outline-none focus:border-indigo-500"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Quản lý chỉ số nước')
+                    <form method="POST" action="{{ route('water-quality-logs.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Ngày đo *</label>
+                                <input type="date" name="date" value="{{ date('Y-m-d') }}" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Giờ đo *</label>
+                                <input type="time" name="time" value="{{ date('H:i') }}" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+
+                        <!-- Dropdowns for sampling location mapping automatically to selected activeTab -->
+                        <div>
+                            <label class="block mb-1">Vị trí lấy mẫu *</label>
+                            
+                            <!-- Dropdown for Ao Nuoi -->
+                            <select x-show="activeTab === 'ao_nuoi'" name="sampling_location" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl" :disabled="activeTab !== 'ao_nuoi'">
+                                @foreach($allPonds as $pond)
+                                    <option value="{{ $pond->name }}">{{ $pond->name }}</option>
+                                @endforeach
+                            </select>
+
+                            <!-- Dropdown for Ao Lang -->
+                            <select x-show="activeTab === 'ao_lang'" name="sampling_location" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl" :disabled="activeTab !== 'ao_lang'">
+                                <option value="Ao Lắng A">Ao Lắng A (Khu Tây)</option>
+                                <option value="Ao Lắng B">Ao Lắng B (Khu Đông)</option>
+                            </select>
+
+                            <!-- Dropdown for Cau Cap -->
+                            <select x-show="activeTab === 'cau_cap'" name="sampling_location" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl" :disabled="activeTab !== 'cau_cap'">
+                                <option value="Cầu Cấp A">Cầu Cấp A (Sông Tiền)</option>
+                                <option value="Cầu Cấp B">Cầu Cấp B (Kênh Chính)</option>
+                            </select>
+                        </div>
+
+                        <!-- Fields for Ao Nuoi -->
+                        <div x-show="activeTab === 'ao_nuoi'" class="space-y-4">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block mb-1">pH (đơn vị)</label>
+                                    <input type="number" step="0.1" name="ph" placeholder="7.8" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block mb-1">Oxy hòa tan DO (mg/L)</label>
+                                    <input type="number" step="0.1" name="transparency" placeholder="5.2" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block mb-1">Độ Mặn (ppt)</label>
+                                    <input type="number" step="0.1" name="salinity" placeholder="15" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-1">Khí Độc NH₃ (mg/L)</label>
+                                    <input type="number" step="0.01" name="tidal_peak" placeholder="0.01" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block mb-1">Khí Độc H₂S (mg/L)</label>
+                                    <input type="number" step="0.001" name="water_level" placeholder="0.002" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fields for Ao Lang -->
+                        <div x-show="activeTab === 'ao_lang'" class="space-y-4">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block mb-1">Độ Mặn (ppt)</label>
+                                    <input type="number" step="0.1" name="salinity" placeholder="16.5" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block mb-1">pH</label>
+                                    <input type="number" step="0.1" name="ph" placeholder="7.9" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block mb-1">Độ Trong (cm)</label>
+                                    <input type="number" step="0.1" name="transparency" placeholder="45" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fields for Cau Cap -->
+                        <div x-show="activeTab === 'cau_cap'" class="space-y-4">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block mb-1">Mực Nước (m)</label>
+                                    <input type="number" step="0.01" name="water_level" placeholder="1.85" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block mb-1">Đỉnh Thủy Triều (m)</label>
+                                    <input type="number" step="0.01" name="tidal_peak" placeholder="2.1" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                                <div>
+                                    <label class="block mb-1">Độ Mặn (ppt)</label>
+                                    <input type="number" step="0.1" name="salinity" placeholder="14.5" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Vật tư & Kho')
+                    <form method="POST" action="{{ route('materials.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Tên vật tư *</label>
+                                <input type="text" name="name" placeholder="Thức ăn GrowMax 02" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Nhà cung cấp *</label>
+                                <select name="supplier_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allSuppliers as $sup)
+                                        <option value="{{ $sup->id }}">{{ $sup->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-1">Phân loại *</label>
+                                <select name="type" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    <option value="feed">Thức ăn</option>
+                                    <option value="medicine">Thuốc</option>
+                                    <option value="probiotic">Vi sinh</option>
+                                    <option value="mineral">Khoáng</option>
+                                    <option value="chemical">Hóa chất</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1">Thương hiệu</label>
+                                <input type="text" name="brand" placeholder="GrowMax" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Kích cỡ hạt (mm)</label>
+                                <input type="number" step="0.1" name="pellet_size" placeholder="1.2" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-1">Quy cách/Đơn vị *</label>
+                                <input type="text" name="unit" placeholder="Bao (25kg)" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Số lượng tồn *</label>
+                                <input type="number" name="stock_quantity" placeholder="1200" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Đơn giá nhập *</label>
+                                <input type="number" name="unit_price" placeholder="380000" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1">Hạn sử dụng</label>
+                            <input type="date" name="expiration_date" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Nhà cung cấp')
+                    <form method="POST" action="{{ route('suppliers.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Tên nhà cung cấp *</label>
+                                <input type="text" name="name" placeholder="Công ty TNHH C.P. Việt Nam" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Phân loại hàng hóa *</label>
+                                <input type="text" name="supply_type" placeholder="seeds, feed" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Số điện thoại</label>
+                                <input type="text" name="phone" placeholder="0291-3829-xxx" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Email</label>
+                                <input type="email" name="email" placeholder="contact@cp.com.vn" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">STK Ngân hàng</label>
+                                <input type="text" name="bank_account" placeholder="Techcombank - 1903..." class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Dư nợ ban đầu (đ)</label>
+                                <input type="number" name="debt" value="0" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1">Địa chỉ liên hệ</label>
+                            <input type="text" name="address" placeholder="KCN Trà Nóc, Cần Thơ" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Quản lý thu hoạch')
+                    <form method="POST" action="{{ route('harvests.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Vụ nuôi *</label>
+                                <select name="cultivation_cycle_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allCycles as $cycle)
+                                        <option value="{{ $cycle->id }}">{{ $cycle->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1">Ao thu hoạch *</label>
+                                <select name="pond_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allPonds as $pond)
+                                        <option value="{{ $pond->id }}">{{ $pond->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-1">Ngày thu hoạch *</label>
+                                <input type="date" name="harvest_date" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Tuổi tôm DOC *</label>
+                                <input type="number" name="doc" placeholder="90" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Hình thức thu *</label>
+                                <select name="harvest_type" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    <option value="total">Thu toàn bộ</option>
+                                    <option value="partial">Thu tỉa bớt</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-1">Khối lượng (kg) *</label>
+                                <input type="number" name="weight" placeholder="4200" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Số lượng (con) *</label>
+                                <input type="number" name="quantity" placeholder="160000" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Tình trạng tôm *</label>
+                                <select name="shrimp_condition" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    <option value="alive">Tôm sống</option>
+                                    <option value="dead">Tôm ngộp/chết</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-1">Kích cỡ Size (con/kg)</label>
+                                <input type="text" name="size_range" placeholder="38 con/kg" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Đơn giá bán *</label>
+                                <input type="number" name="unit_price" placeholder="160000" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Phí thuê tay lưới (nếu có)</label>
+                                <input type="number" name="net_rental_fee" value="0" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Quản lý bán hàng')
+                    <form method="POST" action="{{ route('sales-invoices.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Mã hóa đơn bán hàng *</label>
+                                <input type="text" name="invoice_number" placeholder="HD-2026-041" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Thương lái / Khách hàng *</label>
+                                <select name="customer_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allCustomers as $cust)
+                                        <option value="{{ $cust->id }}">{{ $cust->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Đợt thu hoạch liên kết *</label>
+                                <select name="harvest_id" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    @foreach($allHarvests as $harv)
+                                        <option value="{{ $harv->id }}">TH-{{ $harv->id }} (Ao {{ $harv->pond->name ?? 'N/A' }} - {{ number_format($harv->weight) }}kg)</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1">Ngày hóa đơn *</label>
+                                <input type="date" name="invoice_date" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-1">Tổng tiền hóa đơn *</label>
+                                <input type="number" name="total_amount" placeholder="672000000" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Đã thanh toán trước *</label>
+                                <input type="number" name="paid_amount" placeholder="672000000" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Trạng thái thanh toán *</label>
+                                <select name="status" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    <option value="paid">Đã thanh toán hoàn toàn</option>
+                                    <option value="unpaid">Nợ gối đầu / Chưa thanh toán</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Quản lý khách hàng')
+                    <form method="POST" action="{{ route('customers.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Tên khách hàng / Thương lái *</label>
+                                <input type="text" name="name" placeholder="Thương lái Trần Văn Thành" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Số điện thoại *</label>
+                                <input type="text" name="phone" placeholder="0909-382-xxx" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Email</label>
+                                <input type="email" name="email" placeholder="thanhtran@gmail.com" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">STK Ngân hàng</label>
+                                <input type="text" name="bank_account" placeholder="Vietcombank - 0071..." class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Địa bàn / Địa chỉ thu mua</label>
+                                <input type="text" name="address" placeholder="Bạc Liêu, Sóc Trăng" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Dư nợ ban đầu (đ)</label>
+                                <input type="number" name="debt" value="0" class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
+
+                @if($title === 'Chi phí vận hành')
+                    <form method="POST" action="{{ route('operating-expenses.store') }}" class="space-y-4 text-xs font-semibold text-slate-700">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Ngày chi *</label>
+                                <input type="date" name="date" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Danh mục chi phí *</label>
+                                <select name="expense_type" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    <option value="electricity">Điện & Năng lượng</option>
+                                    <option value="feed">Thức ăn</option>
+                                    <option value="salary">Lương nhân sự</option>
+                                    <option value="fuel">Nhiên liệu</option>
+                                    <option value="maintenance">Bảo trì ao</option>
+                                    <option value="chemicals">Hóa chất</option>
+                                    <option value="probiotic">Vi sinh</option>
+                                    <option value="mineral">Khoáng</option>
+                                    <option value="seed">Tôm giống</option>
+                                    <option value="other">Chi phí khác</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-1">Loại trung tâm chi phí *</label>
+                                <select name="cost_center_type" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    <option value="zone">Khu nuôi (Zone)</option>
+                                    <option value="pond">Ao nuôi (Pond)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1">ID Trung tâm chi phí *</label>
+                                <input type="number" name="cost_center_id" placeholder="1" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Phương thức phân bổ *</label>
+                                <select name="allocation_method" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                                    <option value="direct">Phân bổ trực tiếp</option>
+                                    <option value="equal_split">Chia đều</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1">Số tiền chi (đ) *</label>
+                                <input type="number" name="amount" placeholder="54200000" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Chi tiết nghiệp vụ *</label>
+                                <input type="text" name="description" placeholder="Thanh toán tiền điện trạm hạ thế tháng 05" required class="w-full bg-white border border-slate-200 p-2.5 rounded-xl">
+                            </div>
+                        </div>
+                        <div class="flex justify-end space-x-2.5 pt-4">
+                            <button @click="showAddModal = false" type="button" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 font-bold">Hủy</button>
+                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold">Lưu lại</button>
+                        </div>
+                    </form>
+                @endif
             </div>
         </div>
     </div>
+
+    <!-- Script tag for Chart.js if loaded -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if($title === 'Quản lý chỉ số nước')
+                const tempCtx = document.getElementById('waterAirTempChart').getContext('2d');
+                new Chart(tempCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['01/06', '02/06', '03/06', '04/06', '05/06', '06/06', '07/06', '08/06', '09/06', '10/06'],
+                        datasets: [
+                            {
+                                label: 'Nhiệt độ nước (°C)',
+                                data: [27.5, 28.0, 27.2, 28.5, 29.0, 28.8, 27.9, 28.1, 28.6, 28.3],
+                                borderColor: '#4f46e5',
+                                backgroundColor: 'rgba(79, 70, 229, 0.08)',
+                                fill: true,
+                                tension: 0.3,
+                                borderWidth: 2.5,
+                                pointBackgroundColor: '#4f46e5',
+                            },
+                            {
+                                label: 'Nhiệt độ không khí (°C)',
+                                data: [31.2, 32.0, 30.5, 33.1, 34.0, 32.5, 31.8, 32.2, 33.5, 32.9],
+                                borderColor: '#f59e0b',
+                                backgroundColor: 'transparent',
+                                tension: 0.3,
+                                borderWidth: 2,
+                                pointBackgroundColor: '#f59e0b',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#64748b', font: { size: 10, weight: '600' } }
+                            }
+                        },
+                        scales: {
+                            y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { color: '#f1f5f9' } },
+                            x: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } }
+                        }
+                    }
+                });
+            @endif
+
+            @if($title === 'Chi phí vận hành')
+                const costCtx = document.getElementById('expenseDistributionChart').getContext('2d');
+                new Chart(costCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Điện & Năng lượng', 'Lương nhân sự', 'Nhiên liệu', 'Bảo trì ao', 'Khác'],
+                        datasets: [{
+                            label: 'Số tiền (VND)',
+                            data: [54200000, 65000000, 10800000, 14500000, 8000000],
+                            backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#94a3b8'],
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { color: '#f1f5f9' } },
+                            x: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } }
+                        }
+                    }
+                });
+            @endif
+        });
+    </script>
 </x-app-layout>

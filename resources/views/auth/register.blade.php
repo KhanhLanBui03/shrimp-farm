@@ -54,6 +54,17 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
         </div>
 
+        <!-- Terms & Conditions -->
+        <div class="flex items-start">
+            <div class="flex items-center h-5">
+                <input id="terms" name="terms" type="checkbox" required class="border border-slate-200 text-[#16a34a] focus:ring-emerald-500/20 rounded bg-slate-50">
+            </div>
+            <div class="ms-3 text-xs">
+                <label for="terms" class="font-medium text-slate-500">Tôi đồng ý với <a href="#" class="text-[#16a34a] hover:underline font-semibold">Điều khoản sử dụng</a> và <a href="#" class="text-[#16a34a] hover:underline font-semibold">Chính sách bảo mật</a></label>
+                <x-input-error :messages="$errors->get('terms')" class="mt-1" />
+            </div>
+        </div>
+
         <!-- Action Button -->
         <div>
             <button type="submit" class="w-full text-center text-xs font-bold uppercase tracking-wider text-white bg-[#16a34a] hover:bg-[#15803d] py-3.5 rounded-lg hover:shadow-lg hover:shadow-emerald-500/10 transition-all">

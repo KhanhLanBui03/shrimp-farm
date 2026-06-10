@@ -42,7 +42,19 @@ class TechnicalLogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'cultivation_cycle_id' => 'required|exists:cultivation_cycles,id',
+            'pond_id' => 'required|exists:ponds,id',
+            'date' => 'required|date',
+            'doc' => 'required|integer|min:0',
+            'feed_amount' => 'nullable|numeric|min:0',
+            'shrimp_size' => 'nullable|numeric|min:0',
+            'notes' => 'nullable|string',
+        ]);
+
+        TechnicalLog::create($validated);
+
+        return redirect()->back()->with('success', 'Ghi nhật ký kỹ thuật thành công!');
     }
 
     /**

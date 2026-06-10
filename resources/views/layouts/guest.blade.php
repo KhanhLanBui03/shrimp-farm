@@ -36,9 +36,24 @@
             <div class="flex flex-col items-center mb-8">
                 <a href="/" class="flex items-center gap-2 group">
                     <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-sky-500 p-[1.5px] shadow-md shadow-emerald-500/10">
-                        <div class="w-full h-full bg-white rounded-[7px] flex items-center justify-center">
-                            <svg class="w-4.5 h-4.5 text-[#16a34a]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12c0-3 3-3 3-3s3 3 6 3 6-3 6-3v6s-3 3-6 3-6-3-6-3z" />
+                        <div class="w-full h-full bg-white rounded-[7px] flex items-center justify-center p-0.5">
+                            <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="shrimp-grad-guest" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#10b981" />
+                                        <stop offset="50%" stop-color="#06b6d4" />
+                                        <stop offset="100%" stop-color="#3b82f6" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M6 22C6 14.5 11.5 8 18.5 8C23.5 8 26.5 11 28 14.5" stroke="url(#shrimp-grad-guest)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M9 24C11.5 21.5 13.5 19 13.5 16C13.5 13 16 11 19 11C21.5 11 23 12.5 24 14" stroke="url(#shrimp-grad-guest)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
+                                <path d="M4 25C5.5 24.5 6 23 5.5 21.5C5 20 6.5 19.5 7.5 20.5" stroke="url(#shrimp-grad-guest)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M28 14.5C29.5 13.5 31 13 32 13" stroke="url(#shrimp-grad-guest)" stroke-width="1.5" stroke-linecap="round" />
+                                <path d="M27 12C28.5 9.5 30 8 31 7" stroke="url(#shrimp-grad-guest)" stroke-width="1.5" stroke-linecap="round" opacity="0.75" />
+                                <path d="M10 27C14 28.5 18 28.5 22 27" stroke="url(#shrimp-grad-guest)" stroke-width="1.5" stroke-linecap="round" opacity="0.6" />
+                                <circle cx="18.5" cy="8" r="1.5" fill="#10b981" />
+                                <circle cx="28" cy="14.5" r="1.5" fill="#06b6d4" />
+                                <circle cx="13.5" cy="16" r="1.2" fill="#3b82f6" />
                             </svg>
                         </div>
                     </div>

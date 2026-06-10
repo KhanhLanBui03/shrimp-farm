@@ -41,7 +41,17 @@ class CultivationCycleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'code' => 'required|string|unique:cultivation_cycles,code|max:50',
+            'name' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'expected_end_date' => 'nullable|date',
+            'status' => 'required|string|in:planning,active,completed,cancelled',
+        ]);
+
+        CultivationCycle::create($validated);
+
+        return redirect()->back()->with('success', 'Thêm vụ nuôi thành công!');
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\AuditLog;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -41,7 +43,26 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'nullable|string|max:500',
+            'phone' => 'nullable|string|max:50',
+            'email' => 'nullable|email|max:255',
+            'bank_account' => 'nullable|string|max:100',
+            'debt' => 'nullable|numeric|min:0',
+        ]);
+
+        $customer = Customer::create($validated);
+
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Thêm khách hàng',
+            'description' => "Đã tạo khách hàng mới: {$customer->name} (SĐT: {$customer->phone})",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
+        return redirect()->back()->with('success', 'Thêm khách hàng thành công!');
     }
 
     /**

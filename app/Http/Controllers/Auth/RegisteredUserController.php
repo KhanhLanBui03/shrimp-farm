@@ -38,6 +38,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', Rule::enum(UserRole::class)],
+            'terms' => ['accepted'],
         ]);
 
         $user = User::create([
@@ -49,8 +50,9 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Không đăng nhập tự động để người dùng thực hiện đăng nhập lại
+        // Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('login')->with('status', 'Đăng ký tài khoản thành công! Vui lòng đăng nhập.');
     }
 }

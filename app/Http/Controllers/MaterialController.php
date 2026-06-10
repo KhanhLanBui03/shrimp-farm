@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use App\Models\AuditLog;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -43,7 +45,29 @@ class MaterialController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'supplier_id' => 'required|exists:suppliers,id',
+            'name' => 'required|string|max:255',
+            'type' => 'required|string|in:feed,medicine,probiotic,mineral,chemical,other',
+            'brand' => 'nullable|string|max:255',
+            'pellet_size' => 'nullable|numeric',
+            'unit' => 'required|string|max:50',
+            'stock_quantity' => 'required|numeric|min:0',
+            'unit_price' => 'required|numeric|min:0',
+            'expiration_date' => 'nullable|date',
+        ]);
+
+        $material = Material::create($validated);
+
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Nhập kho vật tư',
+            'description' => "Đã tạo/nhập kho vật tư mới: {$material->name} (Số lượng: {$material->stock_quantity} {$material->unit})",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
+        return redirect()->back()->with('success', 'Nhập kho vật tư thành công!');
     }
 
     /**

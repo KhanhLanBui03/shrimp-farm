@@ -243,7 +243,7 @@ class DatabaseSeeder extends Seeder
             'seed_type' => 'Tôm thẻ chân trắng'
         ]);
 
-        // Seed Water Quality Logs
+        // Seed Water Quality Logs (Ao Nuoi, Ao Lang, Cau Cap)
         \App\Models\WaterQualityLog::create([
             'date' => '2026-06-10',
             'time' => '09:00:00',
@@ -264,6 +264,50 @@ class DatabaseSeeder extends Seeder
             'transparency' => 30.00,
             'tidal_peak' => 1.70,
             'water_level' => 1.10
+        ]);
+
+        \App\Models\WaterQualityLog::create([
+            'date' => '2026-06-10',
+            'time' => '07:30:00',
+            'sampling_location' => 'Ao Lắng A',
+            'salinity' => 16.50,
+            'ph' => 7.90,
+            'transparency' => 45.00,
+            'tidal_peak' => null,
+            'water_level' => null
+        ]);
+
+        \App\Models\WaterQualityLog::create([
+            'date' => '2026-06-09',
+            'time' => '15:20:00',
+            'sampling_location' => 'Ao Lắng B',
+            'salinity' => 15.80,
+            'ph' => 8.10,
+            'transparency' => 42.00,
+            'tidal_peak' => null,
+            'water_level' => null
+        ]);
+
+        \App\Models\WaterQualityLog::create([
+            'date' => '2026-06-10',
+            'time' => '06:15:00',
+            'sampling_location' => 'Cầu Cấp A',
+            'salinity' => 14.50,
+            'ph' => null,
+            'transparency' => null,
+            'tidal_peak' => 2.10,
+            'water_level' => 1.85
+        ]);
+
+        \App\Models\WaterQualityLog::create([
+            'date' => '2026-06-10',
+            'time' => '18:30:00',
+            'sampling_location' => 'Cầu Cấp B',
+            'salinity' => 15.20,
+            'ph' => null,
+            'transparency' => null,
+            'tidal_peak' => 1.95,
+            'water_level' => 1.60
         ]);
 
         // Seed Technical Logs

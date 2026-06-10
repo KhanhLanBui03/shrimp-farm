@@ -41,7 +41,20 @@ class SeedBatchController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'cultivation_cycle_id' => 'required|exists:cultivation_cycles,id',
+            'pond_id' => 'required|exists:ponds,id',
+            'supplier_id' => 'required|exists:suppliers,id',
+            'lot_number' => 'required|string|max:50',
+            'quantity' => 'required|integer|min:0',
+            'stocking_date' => 'required|date',
+            'stocking_density' => 'required|numeric|min:0',
+            'seed_type' => 'required|string|max:100',
+        ]);
+
+        SeedBatch::create($validated);
+
+        return redirect()->back()->with('success', 'Thêm lô thả giống thành công!');
     }
 
     /**

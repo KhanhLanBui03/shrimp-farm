@@ -42,7 +42,20 @@ class WaterQualityLogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'time' => 'required',
+            'sampling_location' => 'required|string|max:100',
+            'salinity' => 'nullable|numeric',
+            'ph' => 'nullable|numeric',
+            'transparency' => 'nullable|numeric',
+            'tidal_peak' => 'nullable|numeric',
+            'water_level' => 'nullable|numeric',
+        ]);
+
+        WaterQualityLog::create($validated);
+
+        return redirect()->back()->with('success', 'Ghi nhật ký chỉ số nước thành công!');
     }
 
     /**

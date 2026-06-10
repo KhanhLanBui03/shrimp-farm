@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\AuditLog;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -41,7 +43,27 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'nullable|string|max:500',
+            'phone' => 'nullable|string|max:50',
+            'email' => 'nullable|email|max:255',
+            'bank_account' => 'nullable|string|max:100',
+            'supply_type' => 'nullable|string|max:255',
+            'debt' => 'nullable|numeric|min:0',
+        ]);
+
+        $supplier = Supplier::create($validated);
+
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'Thêm nhà cung cấp',
+            'description' => "Đã tạo nhà cung cấp mới: {$supplier->name} (SĐT: {$supplier->phone})",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
+        return redirect()->back()->with('success', 'Thêm nhà cung cấp thành công!');
     }
 
     /**
