@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth overflow-x-hidden">
 
 <head>
     <meta charset="utf-8">
@@ -58,10 +58,10 @@
 
     <!-- Ambient Glowing Background Elements -->
     <div
-        class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-200/20 rounded-full blur-[120px] pointer-events-none -z-10">
+        class="hidden md:block absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-200/20 rounded-full blur-[120px] pointer-events-none -z-10">
     </div>
     <div
-        class="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-sky-200/20 rounded-full blur-[140px] pointer-events-none -z-10">
+        class="hidden md:block absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-sky-200/20 rounded-full blur-[140px] pointer-events-none -z-10">
     </div>
 
     <!-- Navigation Header -->
@@ -169,7 +169,7 @@
         </div>
 
         <!-- Mobile Nav Menu Drawer Panel -->
-        <div x-show="mobileMenuOpen" class="fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-2xl flex flex-col p-6 border-l border-slate-100"
+        <div x-show="mobileMenuOpen" class="fixed inset-y-0 right-0 w-full bg-white shadow-2xl flex flex-col p-6 border-l border-slate-100"
             x-transition:enter="transition ease-out duration-300 transform"
             x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
             x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-x-0"
