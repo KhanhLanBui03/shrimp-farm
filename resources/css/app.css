@@ -4,9 +4,9 @@
 
 /* Prevent horizontal layout sway and overflow */
 html, body {
-    height: 100vh;
+    min-height: 100vh;
     max-width: 100vw;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 main {

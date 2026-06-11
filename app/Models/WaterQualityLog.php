@@ -15,5 +15,10 @@ class WaterQualityLog extends Model
         'transparency',
         'tidal_peak',
         'water_level',
+        'do',
+        'alkalinity',
+        'temperature',
+        'nh3',
+        'h2s',
     ];
 }

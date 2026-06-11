@@ -47,9 +47,15 @@ class CultivationCycleController extends Controller
             'start_date' => 'required|date',
             'expected_end_date' => 'nullable|date',
             'status' => 'required|string|in:planning,active,completed,cancelled',
+            'pond_ids' => 'nullable|array',
+            'pond_ids.*' => 'exists:ponds,id',
         ]);
 
-        CultivationCycle::create($validated);
+        $cycle = CultivationCycle::create($validated);
+
+        if ($request->has('pond_ids')) {
+            $cycle->ponds()->attach($request->input('pond_ids'));
+        }
 
         return redirect()->back()->with('success', 'Thêm vụ nuôi thành công!');
     }
@@ -59,7 +65,19 @@ class CultivationCycleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $cycle = CultivationCycle::with('ponds')->find($id);
+
+        if (!$cycle) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vụ nuôi không tồn tại'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $cycle
+        ]);
     }
 
     /**

@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="mb-4 text-sm text-gray-600 leading-relaxed">
-        {{ __('Quên mật khẩu? Không sao cả. Chỉ cần cung cấp địa chỉ email của bạn, chúng tôi sẽ gửi liên kết đặt lại mật khẩu qua email để bạn có thể tạo mật khẩu mới.') }}
+        {{ __('Quên mật khẩu? Không sao cả. Chỉ cần cung cấp địa chỉ email của bạn, chúng tôi sẽ gửi mã xác nhận OTP gồm 6 chữ số qua email để bạn có thể tạo mật khẩu mới.') }}
     </div>
 
     <!-- Session Status -->
@@ -18,7 +18,7 @@
 
         <div class="flex items-center justify-end mt-6">
             <x-primary-button class="w-full justify-center">
-                {{ __('Gửi liên kết đặt lại mật khẩu') }}
+                {{ __('Nhận mã xác nhận OTP') }}
             </x-primary-button>
         </div>
     </form>

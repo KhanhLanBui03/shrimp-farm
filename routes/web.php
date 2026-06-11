@@ -50,4 +50,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/audit-logs', [\App\Http\Controllers\AuditLogController::class, 'index'])->name('audit-logs.index');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
