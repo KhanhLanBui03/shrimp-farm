@@ -164,16 +164,15 @@
         <div x-show="mobileMenuOpen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-            @click="mobileMenuOpen = false">
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="mobileMenuOpen = false">
         </div>
 
         <!-- Mobile Nav Menu Drawer Panel -->
-        <div x-show="mobileMenuOpen" class="fixed inset-y-0 right-0 w-full bg-white shadow-2xl flex flex-col p-6 border-l border-slate-100"
-            x-transition:enter="transition ease-out duration-300 transform"
-            x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
-            x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-x-0"
-            x-transition:leave-end="translate-x-full">
+        <div x-show="mobileMenuOpen"
+            class="fixed inset-y-0 right-0 w-full bg-white shadow-2xl flex flex-col p-6 border-l border-slate-100"
+            x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="translate-x-full"
+            x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-200 transform"
+            x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full">
 
             <!-- Drawer Header -->
             <div class="flex items-center justify-between pb-6 border-b border-slate-100">
