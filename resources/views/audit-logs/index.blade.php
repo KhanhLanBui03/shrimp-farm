@@ -19,7 +19,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-50/60 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                        <tr class="bg-slate-50/60 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100 whitespace-nowrap">
                             <th class="py-4 px-6">Thời gian</th>
                             <th class="py-4 px-6">Người thực hiện</th>
                             <th class="py-4 px-6">Hành động</th>
@@ -31,12 +31,12 @@
                     <tbody class="divide-y divide-slate-100 text-slate-600">
                         @forelse($auditLogs as $log)
                             <tr class="hover:bg-slate-50/10">
-                                <td class="py-4 px-6 font-mono">{{ $log->created_at->format('d/m/Y H:i:s') }}</td>
-                                <td class="py-4 px-6 font-bold text-slate-800">
+                                <td class="py-4 px-6 font-mono whitespace-nowrap">{{ $log->created_at->format('d/m/Y H:i:s') }}</td>
+                                <td class="py-4 px-6 font-bold text-slate-800 whitespace-nowrap">
                                     {{ $log->user->name ?? 'Hệ thống' }} ({{ $log->user->username ?? 'system' }})
                                 </td>
                                 <td class="py-4 px-6">
-                                    <span class="px-2.5 py-0.5 font-bold rounded-lg text-[10px] uppercase border bg-slate-50 text-slate-700 border-slate-200">
+                                    <span class="inline-block px-2.5 py-0.5 font-bold rounded-lg text-[10px] uppercase border bg-slate-50 text-slate-700 border-slate-200 whitespace-nowrap">
                                         {{ $log->action }}
                                     </span>
                                 </td>

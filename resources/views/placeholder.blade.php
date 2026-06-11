@@ -347,7 +347,7 @@
                     <table x-show="activeTab === 'ao_nuoi'" class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr
-                                class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px] whitespace-nowrap">
                                 <th class="py-4 px-6">Thời Gian</th>
                                 <th class="py-4 px-6">Ao Nuôi</th>
                                 <th class="py-4 px-6">pH</th>
@@ -366,7 +366,7 @@
                                 });
                             @endphp
                             @forelse($aoNuoiLogs as $log)
-                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                <tr class="hover:bg-slate-50/40 transition-colors whitespace-nowrap">
                                     <td class="py-4 px-6 font-semibold text-slate-800">
                                         {{ \Carbon\Carbon::parse($log->date)->format('d/m/Y') }} {{ $log->time }}
                                     </td>
@@ -422,7 +422,7 @@
                     <table x-show="activeTab === 'ao_lang'" class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr
-                                class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px] whitespace-nowrap">
                                 <th class="py-4 px-6">Thời Gian</th>
                                 <th class="py-4 px-6">Vị Trí Ao Lắng</th>
                                 <th class="py-4 px-6">Độ Mặn</th>
@@ -439,7 +439,7 @@
                                 });
                             @endphp
                             @forelse($aoLangLogs as $log)
-                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                <tr class="hover:bg-slate-50/40 transition-colors whitespace-nowrap">
                                     <td class="py-4 px-6 font-semibold text-slate-800">
                                         {{ \Carbon\Carbon::parse($log->date)->format('d/m/Y') }} {{ $log->time }}
                                     </td>
@@ -479,7 +479,7 @@
                     <table x-show="activeTab === 'cau_cap'" class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr
-                                class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px] whitespace-nowrap">
                                 <th class="py-4 px-6">Thời Gian</th>
                                 <th class="py-4 px-6">Vị Trí Cầu Cấp</th>
                                 <th class="py-4 px-6">Mực Nước (m)</th>
@@ -496,7 +496,7 @@
                                 });
                             @endphp
                             @forelse($cauCapLogs as $log)
-                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                <tr class="hover:bg-slate-50/40 transition-colors whitespace-nowrap">
                                     <td class="py-4 px-6 font-semibold text-slate-800">
                                         {{ \Carbon\Carbon::parse($log->date)->format('d/m/Y') }} {{ $log->time }}
                                     </td>
@@ -537,7 +537,7 @@
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr
-                                class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px] whitespace-nowrap">
                                 @foreach($config['columns'] as $col)
                                     <th class="py-4 px-6">{{ $col }}</th>
                                 @endforeach
@@ -546,7 +546,7 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-slate-650 font-medium">
                             @forelse($config['rows'] as $row)
-                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                <tr class="hover:bg-slate-50/40 transition-colors whitespace-nowrap">
                                     @foreach($row as $key => $val)
                                         @if($key !== 'status_type' && $key !== '_id')
                                             <td class="py-4 px-6">

@@ -104,12 +104,12 @@
                             <h3 class="text-md font-bold text-slate-900">Nhật ký kỹ thuật gần nhất</h3>
                             <p class="text-xs text-slate-500">Các hoạt động theo dõi ao nuôi vừa cập nhật</p>
                         </div>
-                        <a href="{{ route('technical-logs.index') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700">Xem tất cả →</a>
+                        <a href="{{ route('technical-logs.index') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors">Xem tất cả →</a>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
-                                <tr class="bg-slate-50/60 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                                <tr class="bg-slate-50/60 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100 whitespace-nowrap">
                                     <th class="py-3 px-4">Ngày ghi</th>
                                     <th class="py-3 px-4">Ao nuôi</th>
                                     <th class="py-3 px-4">Vụ nuôi</th>
@@ -118,19 +118,19 @@
                                     <th class="py-3 px-4">Kích thước tôm</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tbody class="divide-y divide-slate-100 text-slate-650 font-medium">
                                 @forelse($recentLogs as $log)
-                                    <tr class="hover:bg-slate-50/20">
-                                        <td class="py-3 px-4 font-mono font-medium">{{ date('d/m/Y', strtotime($log->date)) }}</td>
+                                    <tr class="hover:bg-slate-50/20 whitespace-nowrap">
+                                        <td class="py-3 px-4 font-mono font-semibold">{{ date('d/m/Y', strtotime($log->date)) }}</td>
                                         <td class="py-3 px-4 font-bold text-slate-800">{{ $log->pond->name ?? 'N/A' }}</td>
-                                        <td class="py-3 px-4 font-medium">{{ $log->cultivationCycle->name ?? 'N/A' }}</td>
+                                        <td class="py-3 px-4">{{ $log->cultivationCycle->name ?? 'N/A' }}</td>
                                         <td class="py-3 px-4 text-center font-bold font-mono">{{ $log->ph }}</td>
                                         <td class="py-3 px-4 text-right font-bold font-mono">{{ number_format($log->feed_amount, 1) }}</td>
-                                        <td class="py-3 px-4 font-medium">{{ $log->shrimp_size ? $log->shrimp_size . ' con/kg' : 'Chưa đo' }}</td>
+                                        <td class="py-3 px-4">{{ $log->shrimp_size ? $log->shrimp_size . ' con/kg' : 'Chưa đo' }}</td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="py-8 text-center text-slate-400">Không có nhật ký kỹ thuật nào gần đây.</td>
+                                        <td colspan="6" class="py-8 text-center text-slate-400 font-normal">Không có nhật ký kỹ thuật nào gần đây.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

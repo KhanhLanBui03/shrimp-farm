@@ -1,5 +1,8 @@
-<aside :class="sidebarCollapsed ? 'w-20' : 'w-64'" 
-       class="z-30 bg-slate-900 text-slate-300 h-screen flex flex-col justify-between border-r border-slate-800 shadow-xl select-none shrink-0 sticky top-0 transition-all duration-300 ease-in-out">
+<aside :class="[
+         sidebarCollapsed ? 'w-20' : 'w-64',
+         mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+       ]" 
+       class="z-40 bg-slate-900 text-slate-300 h-screen flex flex-col justify-between border-r border-slate-800 shadow-xl select-none shrink-0 fixed inset-y-0 left-0 md:sticky md:top-0 transition-all duration-300 ease-in-out">
     <!-- Brand / Header -->
     <div class="p-4 border-b border-slate-800/60 bg-slate-950/30">
         <div class="flex items-center justify-between" :class="sidebarCollapsed ? 'flex-col space-y-3' : 'flex-row'">
@@ -35,17 +38,28 @@
                     <p class="text-[9px] text-slate-500 uppercase tracking-widest font-semibold mt-0.5">Management</p>
                 </div>
             </div>
-            <!-- Toggle Button -->
-            <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('sidebarCollapsed', sidebarCollapsed)" 
-                    class="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors focus:outline-none flex items-center justify-center"
-                    :class="sidebarCollapsed ? 'mt-2' : ''">
-                <svg x-show="!sidebarCollapsed" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h12m-12 6h16M16 8l-4 4 4 4"></path>
-                </svg>
-                <svg x-show="sidebarCollapsed" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h12m-12 6h16M12 8l4 4-4 4"></path>
-                </svg>
-            </button>
+            <!-- Toggle / Close Buttons -->
+            <div class="flex items-center">
+                <!-- Mobile Close Button -->
+                <button @click="mobileSidebarOpen = false" 
+                        class="md:hidden p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors focus:outline-none flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                
+                <!-- Desktop Toggle Button -->
+                <button @click="sidebarCollapsed = !sidebarCollapsed; localStorage.setItem('sidebarCollapsed', sidebarCollapsed)" 
+                        class="hidden md:flex p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors focus:outline-none items-center justify-center"
+                        :class="sidebarCollapsed ? 'mt-2' : ''">
+                    <svg x-show="!sidebarCollapsed" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h12m-12 6h16M16 8l-4 4 4 4"></path>
+                    </svg>
+                    <svg x-show="sidebarCollapsed" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h12m-12 6h16M12 8l4 4-4 4"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 

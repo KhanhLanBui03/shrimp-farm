@@ -64,7 +64,7 @@
             this.showModal = true;
         }
     }" 
-    class="py-6 px-8 space-y-6">
+    class="py-6 px-4 md:px-8 space-y-6">
 
         <!-- Notification messages -->
         @if(session('success'))
@@ -74,7 +74,7 @@
         @endif
 
         <!-- Metrics Row -->
-        <div class="grid grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tổng sản lượng thu hoạch</span>
@@ -125,7 +125,7 @@
         </div>
 
         <!-- Section Header Actions -->
-        <div class="flex items-center justify-between mt-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-8">
             <div>
                 <h3 class="text-lg font-bold text-slate-900">Danh sách các đợt thu hoạch</h3>
                 <p class="text-xs text-slate-500 mt-0.5">Quản lý, chỉnh sửa, và theo dõi sản lượng thu hoạch tôm định kỳ hoặc cuối vụ</p>
@@ -144,7 +144,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-50/60 text-slate-400 font-bold text-[10px] uppercase tracking-wider border-b border-slate-100">
+                        <tr class="bg-slate-50/60 text-slate-400 font-bold text-[10px] uppercase tracking-wider border-b border-slate-100 whitespace-nowrap">
                             <th class="py-4 px-6">Mã thu hoạch</th>
                             <th class="py-4 px-6">Vụ nuôi</th>
                             <th class="py-4 px-6">Ao nuôi</th>
@@ -160,7 +160,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-sm">
                         @forelse($items as $item)
-                            <tr class="hover:bg-slate-50/20 transition-all">
+                            <tr class="hover:bg-slate-50/20 transition-all whitespace-nowrap">
                                 <td class="py-4 px-6 font-mono font-bold text-slate-900">TH-{{ $item->id }}</td>
                                 <td class="py-4 px-6 font-semibold text-slate-700">{{ $item->cultivationCycle->name ?? 'N/A' }}</td>
                                 <td class="py-4 px-6 text-indigo-600 font-bold">{{ $item->pond->name ?? 'N/A' }}</td>
@@ -170,18 +170,18 @@
                                 <td class="py-4 px-6 text-center font-mono font-bold text-slate-800">{{ $item->doc }} ngày</td>
                                 <td class="py-4 px-6">
                                     @if($item->harvest_type === 'total')
-                                        <span class="px-2 py-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 rounded uppercase tracking-wider">Thu toàn bộ</span>
+                                        <span class="px-2 py-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 rounded uppercase tracking-wider whitespace-nowrap">Thu toàn bộ</span>
                                     @else
-                                        <span class="px-2 py-0.5 text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-100 rounded uppercase tracking-wider">Thu tỉa bớt</span>
+                                        <span class="px-2 py-0.5 text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-100 rounded uppercase tracking-wider whitespace-nowrap">Thu tỉa bớt</span>
                                     @endif
                                 </td>
                                 <td class="py-4 px-6">
                                     @if($item->shrimp_condition === 'alive')
-                                        <span class="text-xs text-emerald-600 font-bold">● Tôm sống</span>
+                                        <span class="text-xs text-emerald-600 font-bold whitespace-nowrap">● Tôm sống</span>
                                     @elseif($item->shrimp_condition === 'substandard')
-                                        <span class="text-xs text-amber-600 font-bold">● Tôm ke/dạt</span>
+                                        <span class="text-xs text-amber-600 font-bold whitespace-nowrap">● Tôm ke/dạt</span>
                                     @else
-                                        <span class="text-xs text-rose-600 font-bold">● Tôm ngộp/chết</span>
+                                        <span class="text-xs text-rose-600 font-bold whitespace-nowrap">● Tôm ngộp/chết</span>
                                     @endif
                                 </td>
                                 <td class="py-4 px-6 text-right font-bold text-slate-900 font-mono">

@@ -101,7 +101,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
-                            <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                            <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px] whitespace-nowrap">
                                 <th class="py-4 px-6">Thành viên</th>
                                 <th class="py-4 px-6">Tài khoản</th>
                                 <th class="py-4 px-6">Vai trò</th>
@@ -112,9 +112,9 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-slate-650 font-medium">
                             @foreach($users as $user)
-                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                <tr class="hover:bg-slate-50/40 transition-colors whitespace-nowrap">
                                     <!-- User profile and avatar -->
-                                    <td class="py-4 px-6">
+                                    <td class="py-4 px-6 whitespace-nowrap">
                                         <div class="flex items-center space-x-3.5">
                                             @php
                                                 $roleClasses = match($user->role->value) {
@@ -151,13 +151,13 @@
                                     </td>
 
                                     <!-- Username -->
-                                    <td class="py-4 px-6 font-mono text-slate-500">
+                                    <td class="py-4 px-6 font-mono text-slate-500 whitespace-nowrap">
                                         {{ '@' . $user->username }}
                                     </td>
 
                                     <!-- Role badge -->
                                     <td class="py-4 px-6">
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border {{ $roleClasses }}">
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border {{ $roleClasses }} whitespace-nowrap">
                                             {{ $user->role->label() }}
                                         </span>
                                     </td>
@@ -165,12 +165,12 @@
                                     <!-- Status indicator -->
                                     <td class="py-4 px-6">
                                         @if($user->status === 'active')
-                                            <span class="inline-flex items-center space-x-1.5 text-emerald-700 bg-emerald-50/60 border border-emerald-200/60 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase">
+                                            <span class="inline-flex items-center space-x-1.5 text-emerald-700 bg-emerald-50/60 border border-emerald-200/60 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase whitespace-nowrap">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                                 <span>Hoạt động</span>
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center space-x-1.5 text-rose-700 bg-rose-50/60 border border-rose-200/60 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase">
+                                            <span class="inline-flex items-center space-x-1.5 text-rose-700 bg-rose-50/60 border border-rose-200/60 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase whitespace-nowrap">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
                                                 <span>Bị Khóa</span>
                                             </span>
@@ -178,12 +178,12 @@
                                     </td>
 
                                     <!-- Joining date -->
-                                    <td class="py-4 px-6 text-slate-400 font-mono font-normal">
+                                    <td class="py-4 px-6 text-slate-400 font-mono font-normal whitespace-nowrap">
                                         {{ $user->created_at->format('d/m/Y') }}
                                     </td>
 
                                     <!-- Action Controls -->
-                                    <td class="py-4 px-6 text-right">
+                                    <td class="py-4 px-6 text-right whitespace-nowrap">
                                         <div class="inline-flex items-center space-x-1">
                                             <!-- Edit Account -->
                                             <button @click="openEditModal({{ json_encode($user) }})" 
@@ -263,7 +263,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
-                            <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                            <tr class="bg-slate-50/60 border-b border-slate-200/60 text-slate-400 font-bold uppercase tracking-wider text-[10px] whitespace-nowrap">
                                 <th class="py-4 px-6 w-1/3">Phân hệ nghiệp vụ</th>
                                 <th class="py-4 px-6 text-center">Chủ trại</th>
                                 <th class="py-4 px-6 text-center">Kỹ thuật viên</th>
@@ -274,7 +274,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
-                            <tr class="hover:bg-slate-50/20">
+                            <tr class="hover:bg-slate-50/20 whitespace-nowrap">
                                 <td class="py-4 px-6 font-bold text-slate-800">Cấu hình Khu nuôi & Ao nuôi</td>
                                 <td class="py-4 px-6 text-center">
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
@@ -287,7 +287,7 @@
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-slate-50/20">
+                            <tr class="hover:bg-slate-50/20 whitespace-nowrap">
                                 <td class="py-4 px-6 font-bold text-slate-800">Quản lý Chỉ số nước & Nhật ký ao</td>
                                 <td class="py-4 px-6 text-center">
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
@@ -302,7 +302,7 @@
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-slate-50/20">
+                            <tr class="hover:bg-slate-50/20 whitespace-nowrap">
                                 <td class="py-4 px-6 font-bold text-slate-800">Kho vật tư & Nguyên liệu thức ăn</td>
                                 <td class="py-4 px-6 text-center">
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
@@ -319,7 +319,7 @@
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-slate-50/20">
+                            <tr class="hover:bg-slate-50/20 whitespace-nowrap">
                                 <td class="py-4 px-6 font-bold text-slate-800">Thu chi & Chi phí vận hành</td>
                                 <td class="py-4 px-6 text-center">
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
@@ -334,7 +334,7 @@
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-slate-50/20">
+                            <tr class="hover:bg-slate-50/20 whitespace-nowrap">
                                 <td class="py-4 px-6 font-bold text-slate-800">Kế hoạch thu hoạch & Bán tôm</td>
                                 <td class="py-4 px-6 text-center">
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
@@ -349,7 +349,7 @@
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">✓</span>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-slate-50/20 bg-slate-50/5">
+                            <tr class="hover:bg-slate-50/20 bg-slate-50/5 whitespace-nowrap">
                                 <td class="py-4 px-6 font-bold text-slate-800">Quản lý Tài khoản & Phân quyền</td>
                                 <td class="py-4 px-6 text-center text-slate-300">-</td>
                                 <td class="py-4 px-6 text-center text-slate-300">-</td>

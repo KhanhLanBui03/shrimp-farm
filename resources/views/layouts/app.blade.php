@@ -14,33 +14,53 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body x-data="{ showLogoutConfirm: false, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" class="font-sans antialiased bg-slate-50/50">
+    <body x-data="{ showLogoutConfirm: false, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true', mobileSidebarOpen: false }" class="font-sans antialiased bg-slate-50/50">
         <div class="h-screen flex overflow-hidden">
+            <!-- Mobile Sidebar Backdrop Overlay -->
+            <div x-show="mobileSidebarOpen" 
+                 @click="mobileSidebarOpen = false" 
+                 class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-30 md:hidden"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 style="display: none;">
+            </div>
+
             <!-- Sidebar -->
             @include('layouts.sidebar')
 
             <!-- Content Area -->
             <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
                 <!-- Top Header -->
-                <header class="bg-white border-b border-slate-100 px-8 py-4 flex items-center justify-between shrink-0 shadow-sm">
+                <header class="bg-white border-b border-slate-100 px-4 md:px-8 py-4 flex items-center justify-between shrink-0 shadow-sm">
                     <div class="flex items-center space-x-3">
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Hệ thống giám sát</span>
-                        <span class="text-slate-300">|</span>
+                        <!-- Hamburger Toggle Button -->
+                        <button @click="mobileSidebarOpen = !mobileSidebarOpen" 
+                                class="md:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 focus:outline-none transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest hidden sm:inline">Hệ thống giám sát</span>
+                        <span class="text-slate-300 hidden sm:inline">|</span>
                         <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded">Trang trại đang hoạt động</span>
                     </div>
                     
                     <div class="flex items-center space-x-4">
                         <!-- Profile Edit Link -->
-                        <a href="{{ route('profile.edit') }}" class="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-950 bg-slate-50 border border-slate-200 px-4 py-2 rounded-lg hover:bg-slate-100 transition-all">
+                        <a href="{{ route('profile.edit') }}" class="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-slate-950 bg-slate-50 border border-slate-200 px-3 md:px-4 py-2 rounded-lg hover:bg-slate-100 transition-all">
                             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
-                            <span>Hồ sơ cá nhân</span>
+                            <span class="hidden xs:inline">Hồ sơ</span>
                         </a>
                     </div>
                 </header>
 
-                <main class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-50/50 p-8">
+                <main class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-50/50 p-4 md:p-8">
                     <!-- Flash Messages & Validation Errors -->
                     @if (session('success') || session('error') || $errors->any())
                         <div class="max-w-7xl mx-auto mb-6">

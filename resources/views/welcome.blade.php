@@ -81,12 +81,21 @@
                                         <stop offset="100%" stop-color="#3b82f6" />
                                     </linearGradient>
                                 </defs>
-                                <path d="M6 22C6 14.5 11.5 8 18.5 8C23.5 8 26.5 11 28 14.5" stroke="url(#shrimp-grad-welcome)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M9 24C11.5 21.5 13.5 19 13.5 16C13.5 13 16 11 19 11C21.5 11 23 12.5 24 14" stroke="url(#shrimp-grad-welcome)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
-                                <path d="M4 25C5.5 24.5 6 23 5.5 21.5C5 20 6.5 19.5 7.5 20.5" stroke="url(#shrimp-grad-welcome)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M28 14.5C29.5 13.5 31 13 32 13" stroke="url(#shrimp-grad-welcome)" stroke-width="1.5" stroke-linecap="round" />
-                                <path d="M27 12C28.5 9.5 30 8 31 7" stroke="url(#shrimp-grad-welcome)" stroke-width="1.5" stroke-linecap="round" opacity="0.75" />
-                                <path d="M10 27C14 28.5 18 28.5 22 27" stroke="url(#shrimp-grad-welcome)" stroke-width="1.5" stroke-linecap="round" opacity="0.6" />
+                                <path d="M6 22C6 14.5 11.5 8 18.5 8C23.5 8 26.5 11 28 14.5"
+                                    stroke="url(#shrimp-grad-welcome)" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M9 24C11.5 21.5 13.5 19 13.5 16C13.5 13 16 11 19 11C21.5 11 23 12.5 24 14"
+                                    stroke="url(#shrimp-grad-welcome)" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" opacity="0.85" />
+                                <path d="M4 25C5.5 24.5 6 23 5.5 21.5C5 20 6.5 19.5 7.5 20.5"
+                                    stroke="url(#shrimp-grad-welcome)" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M28 14.5C29.5 13.5 31 13 32 13" stroke="url(#shrimp-grad-welcome)"
+                                    stroke-width="1.5" stroke-linecap="round" />
+                                <path d="M27 12C28.5 9.5 30 8 31 7" stroke="url(#shrimp-grad-welcome)"
+                                    stroke-width="1.5" stroke-linecap="round" opacity="0.75" />
+                                <path d="M10 27C14 28.5 18 28.5 22 27" stroke="url(#shrimp-grad-welcome)"
+                                    stroke-width="1.5" stroke-linecap="round" opacity="0.6" />
                                 <circle cx="18.5" cy="8" r="1.5" fill="#10b981" />
                                 <circle cx="28" cy="14.5" r="1.5" fill="#06b6d4" />
                                 <circle cx="13.5" cy="16" r="1.2" fill="#3b82f6" />
@@ -120,17 +129,17 @@
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}"
-                            class="text-sm font-semibold text-white bg-slate-950 hover:bg-slate-800 px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-slate-900/10 hover:shadow-slate-900/20 hover:-translate-y-0.5">
+                            class="hidden md:inline-flex text-sm font-semibold text-white bg-slate-950 hover:bg-slate-800 px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-slate-900/10 hover:shadow-slate-900/20 hover:-translate-y-0.5">
                             Bảng điều khiển
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                            class="text-sm font-semibold text-slate-600 hover:text-slate-900 px-3 py-2 transition-colors">
+                            class="hidden md:inline-flex text-sm font-semibold text-slate-600 hover:text-slate-900 px-3 py-2 transition-colors">
                             Đăng nhập
                         </a>
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}"
-                                class="hidden sm:inline-flex text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-600/10 hover:shadow-emerald-600/20 hover:-translate-y-0.5">
+                                class="hidden md:inline-flex text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-600/10 hover:shadow-emerald-600/20 hover:-translate-y-0.5">
                                 Kích hoạt hệ thống
                             </a>
                         @endif
@@ -147,27 +156,79 @@
                 </button>
             </div>
         </div>
+    </header>
 
-        <!-- Mobile Nav Menu -->
-        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false"
-            class="md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md px-6 py-6 space-y-4" x-transition>
-            <a href="#monitoring" @click="mobileMenuOpen = false" class="block text-sm font-semibold text-slate-600">Vận
+    <!-- Mobile Nav Menu Backdrop Overlay -->
+    <div x-show="mobileMenuOpen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 md:hidden"
+        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+        @click="mobileMenuOpen = false"
+        style="display: none;">
+    </div>
+
+    <!-- Mobile Nav Menu Drawer Panel -->
+    <div x-show="mobileMenuOpen" class="fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-2xl flex flex-col p-6 border-l border-slate-100 z-50 md:hidden"
+        x-transition:enter="transition ease-out duration-300 transform"
+        x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="translate-x-full"
+        style="display: none;">
+
+        <!-- Drawer Header -->
+        <div class="flex items-center justify-between pb-6 border-b border-slate-100">
+            <span class="text-lg font-black tracking-tight text-slate-900 uppercase">AquaControl</span>
+            <button @click="mobileMenuOpen = false"
+                class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Drawer Navigation Links -->
+        <nav class="flex-1 py-8 flex flex-col gap-5">
+            <a href="#monitoring" @click="mobileMenuOpen = false"
+                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Vận
                 hành</a>
-            <a href="#water" @click="mobileMenuOpen = false" class="block text-sm font-semibold text-slate-600">Chỉ số
-                nước</a>
-            <a href="#feeding" @click="mobileMenuOpen = false" class="block text-sm font-semibold text-slate-600">Cho
+            <a href="#water" @click="mobileMenuOpen = false"
+                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Chỉ
+                số nước</a>
+            <a href="#feeding" @click="mobileMenuOpen = false"
+                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Cho
                 ăn</a>
-            <a href="#harvest" @click="mobileMenuOpen = false" class="block text-sm font-semibold text-slate-600">Thu
+            <a href="#harvest" @click="mobileMenuOpen = false"
+                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Thu
                 hoạch</a>
-            <hr class="border-slate-100">
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}"
-                    class="block text-center text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 py-3 rounded-xl shadow-md">
-                    Kích hoạt hệ thống
-                </a>
+            <a href="#testimonials" @click="mobileMenuOpen = false"
+                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Đối
+                tác</a>
+        </nav>
+
+        <!-- Drawer Actions -->
+        <div class="pt-6 border-t border-slate-100 space-y-4">
+            @if (Route::has('login'))
+                @auth
+                    <a href="{{ url('/dashboard') }}"
+                        class="block text-center text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 py-3 rounded-xl shadow-md transition-all">
+                        Bảng điều khiển
+                    </a>
+                @else
+                    <a href="{{ route('login') }}"
+                        class="block text-center text-sm font-bold text-slate-600 hover:text-slate-900 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition-all">
+                        Đăng nhập
+                    </a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}"
+                            class="block text-center text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 py-3 rounded-xl shadow-md transition-all">
+                            Kích hoạt hệ thống
+                        </a>
+                    @endif
+                @endauth
             @endif
         </div>
-    </header>
+    </div>
 
     <!-- Hero Section -->
     <section class="relative soft-grid py-24 md:py-32 px-6">
@@ -781,12 +842,21 @@
                                     <stop offset="100%" stop-color="#3b82f6" />
                                 </linearGradient>
                             </defs>
-                            <path d="M6 22C6 14.5 11.5 8 18.5 8C23.5 8 26.5 11 28 14.5" stroke="url(#shrimp-grad-footer)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M9 24C11.5 21.5 13.5 19 13.5 16C13.5 13 16 11 19 11C21.5 11 23 12.5 24 14" stroke="url(#shrimp-grad-footer)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
-                            <path d="M4 25C5.5 24.5 6 23 5.5 21.5C5 20 6.5 19.5 7.5 20.5" stroke="url(#shrimp-grad-footer)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M28 14.5C29.5 13.5 31 13 32 13" stroke="url(#shrimp-grad-footer)" stroke-width="1.5" stroke-linecap="round" />
-                            <path d="M27 12C28.5 9.5 30 8 31 7" stroke="url(#shrimp-grad-footer)" stroke-width="1.5" stroke-linecap="round" opacity="0.75" />
-                            <path d="M10 27C14 28.5 18 28.5 22 27" stroke="url(#shrimp-grad-footer)" stroke-width="1.5" stroke-linecap="round" opacity="0.6" />
+                            <path d="M6 22C6 14.5 11.5 8 18.5 8C23.5 8 26.5 11 28 14.5"
+                                stroke="url(#shrimp-grad-footer)" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M9 24C11.5 21.5 13.5 19 13.5 16C13.5 13 16 11 19 11C21.5 11 23 12.5 24 14"
+                                stroke="url(#shrimp-grad-footer)" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" opacity="0.85" />
+                            <path d="M4 25C5.5 24.5 6 23 5.5 21.5C5 20 6.5 19.5 7.5 20.5"
+                                stroke="url(#shrimp-grad-footer)" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M28 14.5C29.5 13.5 31 13 32 13" stroke="url(#shrimp-grad-footer)"
+                                stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M27 12C28.5 9.5 30 8 31 7" stroke="url(#shrimp-grad-footer)" stroke-width="1.5"
+                                stroke-linecap="round" opacity="0.75" />
+                            <path d="M10 27C14 28.5 18 28.5 22 27" stroke="url(#shrimp-grad-footer)" stroke-width="1.5"
+                                stroke-linecap="round" opacity="0.6" />
                             <circle cx="18.5" cy="8" r="1.5" fill="#10b981" />
                             <circle cx="28" cy="14.5" r="1.5" fill="#06b6d4" />
                             <circle cx="13.5" cy="16" r="1.2" fill="#3b82f6" />

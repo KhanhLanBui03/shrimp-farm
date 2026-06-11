@@ -63,10 +63,10 @@
         modalData.bottom_diameter = Math.max(0, md - be).toFixed(2);
         modalData.area = (Math.PI * Math.pow((modalData.bottom_diameter / 2), 2)).toFixed(2);
     "
-    class="py-6 px-8 space-y-6">
+    class="py-6 px-4 md:px-8 space-y-6">
 
         <!-- Metrics Row -->
-        <div class="grid grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Tổng số ao nuôi</span>
@@ -136,7 +136,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-50/60 text-slate-400 font-bold text-[10px] uppercase tracking-wider border-b border-slate-100">
+                        <tr class="bg-slate-50/60 text-slate-400 font-bold text-[10px] uppercase tracking-wider border-b border-slate-100 whitespace-nowrap">
                             <th class="py-4 px-6">Mã ao</th>
                             <th class="py-4 px-6">Tên ao</th>
                             <th class="py-4 px-6">Khu nuôi trực thuộc</th>
@@ -149,24 +149,24 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-sm">
                         @foreach($ponds as $pond)
-                            <tr class="hover:bg-slate-50/20 transition-all">
-                                <td class="py-4 px-6 font-bold text-slate-900">{{ $pond['code'] }}</td>
-                                <td class="py-4 px-6 font-semibold text-slate-700">{{ $pond['name'] }}</td>
-                                <td class="py-4 px-6 text-slate-500">{{ $pond['farming_zone'] }}</td>
-                                <td class="py-4 px-6">
+                            <tr class="hover:bg-slate-50/20 transition-all whitespace-nowrap">
+                                <td class="py-4 px-6 font-bold text-slate-900 whitespace-nowrap">{{ $pond['code'] }}</td>
+                                <td class="py-4 px-6 font-semibold text-slate-700 whitespace-nowrap">{{ $pond['name'] }}</td>
+                                <td class="py-4 px-6 text-slate-500 whitespace-nowrap">{{ $pond['farming_zone'] }}</td>
+                                <td class="py-4 px-6 whitespace-nowrap">
                                     @if($pond['pond_type'] === 'nursery')
-                                        <span class="px-2 py-0.5 text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded uppercase tracking-wider">Ao gièo (ươm)</span>
+                                        <span class="px-2 py-0.5 text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded uppercase tracking-wider whitespace-nowrap">Ao gièo (ươm)</span>
                                     @else
-                                        <span class="px-2 py-0.5 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 rounded uppercase tracking-wider">Thương phẩm</span>
+                                        <span class="px-2 py-0.5 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 rounded uppercase tracking-wider whitespace-nowrap">Thương phẩm</span>
                                     @endif
                                 </td>
-                                <td class="py-4 px-6 text-right font-mono text-slate-500">
+                                <td class="py-4 px-6 text-right font-mono text-slate-500 whitespace-nowrap">
                                     {{ number_format($pond['mouth_diameter'], 1) }}m / {{ number_format($pond['bottom_diameter'], 1) }}m / {{ number_format($pond['border_exclusion'], 1) }}m
                                 </td>
-                                <td class="py-4 px-6 text-right font-bold text-slate-900 font-mono">
+                                <td class="py-4 px-6 text-right font-bold text-slate-900 font-mono whitespace-nowrap">
                                     {{ number_format($pond['area'], 2) }} m²
                                 </td>
-                                <td class="py-4 px-6 text-center">
+                                <td class="py-4 px-6 text-center whitespace-nowrap">
                                     @if($pond['status'] === 'rearing')
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
                                             <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-500 rounded-full"></span>
@@ -189,7 +189,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="py-4 px-6 text-center">
+                                <td class="py-4 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center space-x-2">
                                         <!-- History button -->
                                         <button @click="openHistoryDrawer({{ json_encode($pond) }})" 

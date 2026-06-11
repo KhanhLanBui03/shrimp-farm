@@ -20,10 +20,10 @@
             this.modalData = { ...zone };
             this.showModal = true;
         }
-    }" class="py-6 px-8 space-y-6">
+    }" class="py-6 px-4 md:px-8 space-y-6">
 
         <!-- Top Overview Stats -->
-        <div class="grid grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <!-- Stat 1 -->
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                 <div>
@@ -78,7 +78,7 @@
         </div>
 
         <!-- Section Header -->
-        <div class="flex items-center justify-between mt-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-8">
             <div>
                 <h3 class="text-lg font-bold text-slate-900">Danh sách phân khu nuôi</h3>
                 <p class="text-xs text-slate-500 mt-0.5">Quản lý và theo dõi thông tin chi tiết từng phân khu và ao nuôi trực thuộc</p>
@@ -168,7 +168,7 @@
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse">
                                     <thead>
-                                        <tr class="bg-slate-50/40 text-slate-400 font-bold text-[10px] uppercase tracking-wider border-b border-slate-100">
+                                        <tr class="bg-slate-50/40 text-slate-400 font-bold text-[10px] uppercase tracking-wider border-b border-slate-100 whitespace-nowrap">
                                             <th class="py-4 px-6">Mã ao</th>
                                             <th class="py-4 px-6">Tên ao</th>
                                             <th class="py-4 px-6">Loại ao</th>
@@ -179,14 +179,14 @@
                                     </thead>
                                     <tbody class="divide-y divide-slate-100 text-sm">
                                         @foreach($zone['ponds'] as $pond)
-                                            <tr class="hover:bg-slate-50/30 transition-colors">
+                                            <tr class="hover:bg-slate-50/30 transition-colors whitespace-nowrap">
                                                 <td class="py-4 px-6 font-bold text-slate-900">{{ $pond['code'] }}</td>
                                                 <td class="py-4 px-6 text-slate-700 font-medium">{{ $pond['name'] }}</td>
                                                 <td class="py-4 px-6">
                                                     @if($pond['pond_type'] === 'nursery')
-                                                        <span class="px-2.5 py-1 text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded-lg uppercase tracking-wider">Ao gièo (ươm)</span>
+                                                        <span class="px-2.5 py-1 text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded-lg uppercase tracking-wider whitespace-nowrap">Ao gièo (ươm)</span>
                                                     @else
-                                                        <span class="px-2.5 py-1 text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 rounded-lg uppercase tracking-wider">Ao thương phẩm</span>
+                                                        <span class="px-2.5 py-1 text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 rounded-lg uppercase tracking-wider whitespace-nowrap">Ao thương phẩm</span>
                                                     @endif
                                                 </td>
                                                 <td class="py-4 px-6 text-right text-slate-500 font-mono">
@@ -197,17 +197,17 @@
                                                 </td>
                                                 <td class="py-4 px-6 text-center">
                                                     @if($pond['status'] === 'rearing')
-                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100 whitespace-nowrap">
                                                             <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-500 block"></span>
                                                             Đang nuôi
                                                         </span>
                                                     @elseif($pond['status'] === 'rehabilitating')
-                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-100">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-100 whitespace-nowrap">
                                                             <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-amber-500 block"></span>
                                                             Cải tạo ao
                                                         </span>
                                                     @else
-                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-600 border border-slate-200">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-600 border border-slate-200 whitespace-nowrap">
                                                             <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-slate-400 block"></span>
                                                             Ao trống
                                                         </span>
