@@ -50,40 +50,49 @@
     </div>
 
     <!-- Navigation Links -->
-    <div class="flex-1 overflow-y-auto sidebar-scroll px-4 py-6 space-y-6">
+    <div :class="sidebarCollapsed ? 'overflow-visible' : 'overflow-y-auto sidebar-scroll'" class="flex-1 px-4 py-6 space-y-6">
         <!-- HỆ THỐNG -->
         <div>
             <h3 x-show="!sidebarCollapsed" class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Hệ Thống</h3>
             <ul class="space-y-1">
                 <li>
                     <a href="{{ route('dashboard') }}" 
-                       class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('dashboard') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                       class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('dashboard') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                        :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                         <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path>
                         </svg>
                         <span x-show="!sidebarCollapsed">Dashboard</span>
+                        <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                            Dashboard
+                        </span>
                     </a>
                 </li>
                 @if(Auth::user()->hasRole('system_admin') || Auth::user()->hasRole('owner'))
                     <li>
                         <a href="{{ route('users.index') }}" 
-                           class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('users.index') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                           class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('users.index') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                            :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                             <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                             </svg>
                             <span x-show="!sidebarCollapsed">Tài khoản & Phân quyền</span>
+                            <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                Tài khoản & Phân quyền
+                            </span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('audit-logs.index') }}" 
-                           class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('audit-logs.index') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                           class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('audit-logs.index') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                            :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                             <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                             <span x-show="!sidebarCollapsed">Nhật ký hoạt động</span>
+                            <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                Nhật ký hoạt động
+                            </span>
                         </a>
                     </li>
                 @endif
@@ -97,22 +106,28 @@
                 <ul class="space-y-1">
                     <li>
                         <a href="{{ route('farming-zones.index') }}" 
-                           class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('farming-zones.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                           class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('farming-zones.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                            :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                             <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                             </svg>
                             <span x-show="!sidebarCollapsed">Quản lý khu nuôi</span>
+                            <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                Quản lý khu nuôi
+                            </span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('ponds.index') }}" 
-                           class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('ponds.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                           class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('ponds.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                            :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                             <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
                             </svg>
                             <span x-show="!sidebarCollapsed">Quản lý ao nuôi</span>
+                            <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                Quản lý ao nuôi
+                            </span>
                         </a>
                     </li>
                 </ul>
@@ -126,45 +141,57 @@
                 <ul class="space-y-1">
                     <li>
                         <a href="{{ route('cultivation-cycles.index') }}" 
-                           class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('cultivation-cycles.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                           class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('cultivation-cycles.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                            :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                             <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 6H16"></path>
                             </svg>
                             <span x-show="!sidebarCollapsed">Quản lý vụ nuôi</span>
+                            <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                Quản lý vụ nuôi
+                            </span>
                         </a>
                     </li>
                     @if(Auth::user()->hasRole('owner') || Auth::user()->hasRole('system_admin') || Auth::user()->hasRole('technician'))
                         <li>
                             <a href="{{ route('seed-batches.index') }}" 
-                               class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('seed-batches.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                               class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('seed-batches.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                                :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                                 <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                                 </svg>
                                 <span x-show="!sidebarCollapsed">Quản lý thả giống</span>
+                                <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                    Quản lý thả giống
+                                </span>
                             </a>
                         </li>
                     @endif
                     <li>
                         <a href="{{ route('technical-logs.index') }}" 
-                           class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('technical-logs.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                           class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('technical-logs.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                            :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                             <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
                             <span x-show="!sidebarCollapsed">Nhật ký kỹ thuật ao</span>
+                            <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                Nhật ký kỹ thuật ao
+                            </span>
                         </a>
                     </li>
                     @if(Auth::user()->hasRole('owner') || Auth::user()->hasRole('system_admin') || Auth::user()->hasRole('technician'))
                         <li>
                             <a href="{{ route('water-quality-logs.index') }}" 
-                               class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('water-quality-logs.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                               class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('water-quality-logs.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                                :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                                 <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
                                 </svg>
                                 <span x-show="!sidebarCollapsed">Quản lý chỉ số nước</span>
+                                <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                    Quản lý chỉ số nước
+                                </span>
                             </a>
                         </li>
                     @endif
@@ -179,23 +206,29 @@
                 <ul class="space-y-1">
                     <li>
                         <a href="{{ route('materials.index') }}" 
-                           class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('materials.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                           class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('materials.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                            :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                             <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                             </svg>
                             <span x-show="!sidebarCollapsed">Vật tư & Kho</span>
+                            <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                Vật tư & Kho
+                            </span>
                         </a>
                     </li>
                     @if(Auth::user()->hasRole('owner') || Auth::user()->hasRole('system_admin') || Auth::user()->hasRole('warehouse_staff') || Auth::user()->hasRole('accountant'))
                         <li>
                             <a href="{{ route('suppliers.index') }}" 
-                               class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('suppliers.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                               class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('suppliers.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                                :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                                 <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                 </svg>
                                 <span x-show="!sidebarCollapsed">Nhà cung cấp</span>
+                                <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                    Nhà cung cấp
+                                </span>
                             </a>
                         </li>
                     @endif
@@ -210,43 +243,55 @@
                 <ul class="space-y-1">
                     <li>
                         <a href="{{ route('harvests.index') }}" 
-                           class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('harvests.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                           class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('harvests.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                            :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                             <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                             </svg>
                             <span x-show="!sidebarCollapsed">Quản lý thu hoạch</span>
+                            <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                Quản lý thu hoạch
+                            </span>
                         </a>
                     </li>
                     @if(Auth::user()->hasRole('owner') || Auth::user()->hasRole('system_admin') || Auth::user()->hasRole('accountant'))
                         <li>
                             <a href="{{ route('sales-invoices.index') }}" 
-                               class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('sales-invoices.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                               class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('sales-invoices.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                                :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                                 <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 00-4-4H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v8m-6 0h6"></path>
                                 </svg>
                                 <span x-show="!sidebarCollapsed">Quản lý bán hàng</span>
+                                <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                    Quản lý bán hàng
+                                </span>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('customers.index') }}" 
-                               class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('customers.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                               class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('customers.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                                :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                                 <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                                 </svg>
                                 <span x-show="!sidebarCollapsed">Quản lý khách hàng</span>
+                                <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                    Quản lý khách hàng
+                                </span>
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('operating-expenses.index') }}" 
-                               class="flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('operating-expenses.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
+                               class="relative group flex items-center px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('operating-expenses.*') ? 'bg-emerald-500/10 text-emerald-400 font-bold' : 'hover:bg-slate-800/50 hover:text-white' }}"
                                :class="sidebarCollapsed ? 'justify-center' : 'space-x-3'">
                                 <svg class="w-5 h-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span x-show="!sidebarCollapsed">Chi phí vận hành</span>
+                                <span x-show="sidebarCollapsed" class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-950/95 text-slate-200 text-xs font-semibold rounded-lg opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 pointer-events-none transition-all duration-150 origin-left whitespace-nowrap z-50 shadow-xl border border-slate-800/80">
+                                    Chi phí vận hành
+                                </span>
                             </a>
                         </li>
                     @endif
