@@ -158,75 +158,76 @@
         </div>
     </header>
 
-    <!-- Mobile Nav Menu Backdrop Overlay -->
-    <div x-show="mobileMenuOpen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 md:hidden"
-        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-        @click="mobileMenuOpen = false"
-        style="display: none;">
-    </div>
-
-    <!-- Mobile Nav Menu Drawer Panel -->
-    <div x-show="mobileMenuOpen" class="fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-2xl flex flex-col p-6 border-l border-slate-100 z-50 md:hidden"
-        x-transition:enter="transition ease-out duration-300 transform"
-        x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
-        x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-x-0"
-        x-transition:leave-end="translate-x-full"
-        style="display: none;">
-
-        <!-- Drawer Header -->
-        <div class="flex items-center justify-between pb-6 border-b border-slate-100">
-            <span class="text-lg font-black tracking-tight text-slate-900 uppercase">AquaControl</span>
-            <button @click="mobileMenuOpen = false"
-                class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+    <!-- Mobile Nav Menu (Right-to-Left Slide-in Drawer Container) -->
+    <div x-show="mobileMenuOpen" class="fixed inset-0 z-50 md:hidden" style="display: none;">
+        <!-- Backdrop Overlay -->
+        <div x-show="mobileMenuOpen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+            @click="mobileMenuOpen = false">
         </div>
 
-        <!-- Drawer Navigation Links -->
-        <nav class="flex-1 py-8 flex flex-col gap-5">
-            <a href="#monitoring" @click="mobileMenuOpen = false"
-                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Vận
-                hành</a>
-            <a href="#water" @click="mobileMenuOpen = false"
-                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Chỉ
-                số nước</a>
-            <a href="#feeding" @click="mobileMenuOpen = false"
-                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Cho
-                ăn</a>
-            <a href="#harvest" @click="mobileMenuOpen = false"
-                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Thu
-                hoạch</a>
-            <a href="#testimonials" @click="mobileMenuOpen = false"
-                class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Đối
-                tác</a>
-        </nav>
+        <!-- Mobile Nav Menu Drawer Panel -->
+        <div x-show="mobileMenuOpen" class="fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-2xl flex flex-col p-6 border-l border-slate-100"
+            x-transition:enter="transition ease-out duration-300 transform"
+            x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+            x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="translate-x-full">
 
-        <!-- Drawer Actions -->
-        <div class="pt-6 border-t border-slate-100 space-y-4">
-            @if (Route::has('login'))
-                @auth
-                    <a href="{{ url('/dashboard') }}"
-                        class="block text-center text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 py-3 rounded-xl shadow-md transition-all">
-                        Bảng điều khiển
-                    </a>
-                @else
-                    <a href="{{ route('login') }}"
-                        class="block text-center text-sm font-bold text-slate-600 hover:text-slate-900 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition-all">
-                        Đăng nhập
-                    </a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}"
-                            class="block text-center text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 py-3 rounded-xl shadow-md transition-all">
-                            Kích hoạt hệ thống
+            <!-- Drawer Header -->
+            <div class="flex items-center justify-between pb-6 border-b border-slate-100">
+                <span class="text-lg font-black tracking-tight text-slate-900 uppercase">AquaControl</span>
+                <button @click="mobileMenuOpen = false"
+                    class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Drawer Navigation Links -->
+            <nav class="flex-1 py-8 flex flex-col gap-5">
+                <a href="#monitoring" @click="mobileMenuOpen = false"
+                    class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Vận
+                    hành</a>
+                <a href="#water" @click="mobileMenuOpen = false"
+                    class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Chỉ
+                    số nước</a>
+                <a href="#feeding" @click="mobileMenuOpen = false"
+                    class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Cho
+                    ăn</a>
+                <a href="#harvest" @click="mobileMenuOpen = false"
+                    class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Thu
+                    hoạch</a>
+                <a href="#testimonials" @click="mobileMenuOpen = false"
+                    class="text-base font-bold text-slate-600 hover:text-emerald-600 transition-colors py-2 border-b border-slate-50">Đối
+                    tác</a>
+            </nav>
+
+            <!-- Drawer Actions -->
+            <div class="pt-6 border-t border-slate-100 space-y-4">
+                @if (Route::has('login'))
+                    @auth
+                        <a href="{{ url('/dashboard') }}"
+                            class="block text-center text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 py-3 rounded-xl shadow-md transition-all">
+                            Bảng điều khiển
                         </a>
-                    @endif
-                @endauth
-            @endif
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="block text-center text-sm font-bold text-slate-600 hover:text-slate-900 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition-all">
+                            Đăng nhập
+                        </a>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}"
+                                class="block text-center text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 py-3 rounded-xl shadow-md transition-all">
+                                Kích hoạt hệ thống
+                            </a>
+                        @endif
+                    @endauth
+                @endif
+            </div>
         </div>
     </div>
 
