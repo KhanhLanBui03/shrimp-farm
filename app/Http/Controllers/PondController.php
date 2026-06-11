@@ -23,7 +23,7 @@ class PondController extends Controller
             ];
         });
 
-        $ponds = Pond::with(['farmingZone', 'cultivationCycles'])->get()->map(function ($pond) {
+        $ponds = Pond::with(['farmingZone', 'cultivationCycles', 'harvests'])->get()->map(function ($pond) {
             return [
                 'id' => $pond->id,
                 'code' => $pond->code,
@@ -36,12 +36,16 @@ class PondController extends Controller
                 'area' => (float) $pond->area,
                 'pond_type' => $pond->pond_type,
                 'status' => $pond->status,
-                'history' => $pond->cultivationCycles->map(function ($cycle) {
+                'history' => $pond->cultivationCycles->map(function ($cycle) use ($pond) {
+                    $totalYield = $pond->harvests
+                        ->where('cultivation_cycle_id', $cycle->id)
+                        ->sum('weight');
+
                     return [
                         'cycle' => $cycle->name,
                         'start_date' => $cycle->start_date,
                         'harvest_date' => $cycle->expected_end_date ?? 'Chưa kết thúc',
-                        'yield' => 'N/A', // Có thể bổ sung sản lượng thực tế từ bảng harvests sau
+                        'yield' => $totalYield > 0 ? number_format($totalYield, 1) . ' kg' : 'Chưa có',
                         'status' => $cycle->status === 'active' ? 'Đang nuôi' : 'Đã kết thúc',
                     ];
                 })->toArray()

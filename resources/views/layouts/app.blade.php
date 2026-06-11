@@ -14,7 +14,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body x-data="{ showLogoutConfirm: false }" class="font-sans antialiased bg-slate-50/50">
+    <body x-data="{ showLogoutConfirm: false, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" class="font-sans antialiased bg-slate-50/50">
         <div class="h-screen flex overflow-hidden">
             <!-- Sidebar -->
             @include('layouts.sidebar')

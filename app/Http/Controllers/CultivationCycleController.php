@@ -44,11 +44,14 @@ class CultivationCycleController extends Controller
         $validated = $request->validate([
             'code' => 'required|string|unique:cultivation_cycles,code|max:50',
             'name' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'expected_end_date' => 'nullable|date',
+            'start_date' => 'required|date|after_or_equal:today',
+            'expected_end_date' => 'nullable|date|after_or_equal:start_date',
             'status' => 'required|string|in:planning,active,completed,cancelled',
             'pond_ids' => 'nullable|array',
             'pond_ids.*' => 'exists:ponds,id',
+        ], [
+            'start_date.after_or_equal' => 'Ngày bắt đầu vụ nuôi không được phép trước ngày hiện tại.',
+            'expected_end_date.after_or_equal' => 'Ngày kết thúc dự kiến phải sau hoặc bằng ngày bắt đầu.',
         ]);
 
         $cycle = CultivationCycle::create($validated);
