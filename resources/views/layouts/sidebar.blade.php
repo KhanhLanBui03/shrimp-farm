@@ -1,5 +1,5 @@
 <aside :class="sidebarCollapsed ? 'w-20' : 'w-64'" 
-       class="bg-slate-900 text-slate-300 h-screen flex flex-col justify-between border-r border-slate-800 shadow-xl select-none shrink-0 sticky top-0 transition-all duration-300 ease-in-out">
+       class="z-30 bg-slate-900 text-slate-300 h-screen flex flex-col justify-between border-r border-slate-800 shadow-xl select-none shrink-0 sticky top-0 transition-all duration-300 ease-in-out">
     <!-- Brand / Header -->
     <div class="p-4 border-b border-slate-800/60 bg-slate-950/30">
         <div class="flex items-center justify-between" :class="sidebarCollapsed ? 'flex-col space-y-3' : 'flex-row'">
